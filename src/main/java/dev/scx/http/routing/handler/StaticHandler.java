@@ -11,7 +11,6 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
-
 import static dev.scx.http.headers.HttpHeaderName.*;
 import static dev.scx.http.method.HttpMethod.GET;
 import static dev.scx.http.method.HttpMethod.HEAD;

@@ -175,7 +175,7 @@ public class PathMatcherImpl implements PathMatcher {
         if (exactPath) {
             // exact path has no "rest"
             pathParams
-                    .remove("*");
+                .remove("*");
 
             return pathMatchesExact(thePath, requestPath, pathEndsWithSlash);
         } else {
@@ -197,7 +197,7 @@ public class PathMatcherImpl implements PathMatcher {
                     if (thePath.regionMatches(0, requestPath, 0, pathLen - 1)) {
                         // handle the "rest" as path param *, always known to be empty
                         pathParams
-                                .add("*", "/");
+                            .add("*", "/");
                         return true;
                     }
                 }
@@ -206,7 +206,7 @@ public class PathMatcherImpl implements PathMatcher {
             if (requestPath.startsWith(thePath)) {
                 // handle the "rest" as path param *
                 pathParams
-                        .add("*", requestPath.substring(thePath.length()));
+                    .add("*", requestPath.substring(thePath.length()));
                 return true;
             }
             return false;
@@ -221,7 +221,7 @@ public class PathMatcherImpl implements PathMatcher {
         if (pattern != null) {
             // need to reset "rest"
             pathParams
-                    .remove("*");
+                .remove("*");
 
             Matcher m;
             if (requestPath != null && (m = pattern.matcher(requestPath)).matches()) {
@@ -233,7 +233,7 @@ public class PathMatcherImpl implements PathMatcher {
                         matchRest = m.start("rest");
                         // always replace
                         pathParams
-                                .add("*", requestPath.substring(matchRest));
+                            .add("*", requestPath.substring(matchRest));
                     }
 
                     if (!isEmpty(groups)) {

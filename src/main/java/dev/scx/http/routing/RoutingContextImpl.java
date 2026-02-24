@@ -1,11 +1,10 @@
-package cool.scx.http.routing;
+package dev.scx.http.routing;
 
 import dev.scx.http.ScxHttpServerRequest;
 import dev.scx.http.ScxHttpServerResponse;
 import dev.scx.http.exception.HttpException;
 import dev.scx.http.exception.MethodNotAllowedException;
 import dev.scx.http.exception.NotFoundException;
-import dev.scx.http.exception.ScxHttpException;
 import dev.scx.http.parameters.Parameters;
 
 import java.util.HashMap;

@@ -1,13 +1,12 @@
-package cool.scx.http.routing.handler;
+package dev.scx.http.routing.handler;
 
 import dev.scx.function.Function1Void;
 import dev.scx.http.ScxHttpServerResponse;
 import dev.scx.http.exception.ForbiddenException;
-import dev.scx.http.headers.HttpHeaderName;
 import dev.scx.http.headers.ScxHttpHeaderName;
 import dev.scx.http.method.HttpMethod;
 import dev.scx.http.method.ScxHttpMethod;
-import cool.scx.http.routing.RoutingContext;
+import dev.scx.http.routing.RoutingContext;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;

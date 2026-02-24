@@ -1,11 +1,12 @@
 package cool.scx.http.routing;
 
-import cool.scx.http.ScxHttpServerRequest;
-import cool.scx.http.ScxHttpServerResponse;
-import cool.scx.http.exception.MethodNotAllowedException;
-import cool.scx.http.exception.NotFoundException;
-import cool.scx.http.exception.ScxHttpException;
-import cool.scx.http.parameters.Parameters;
+import dev.scx.http.ScxHttpServerRequest;
+import dev.scx.http.ScxHttpServerResponse;
+import dev.scx.http.exception.HttpException;
+import dev.scx.http.exception.MethodNotAllowedException;
+import dev.scx.http.exception.NotFoundException;
+import dev.scx.http.exception.ScxHttpException;
+import dev.scx.http.parameters.Parameters;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -43,7 +44,7 @@ public class RoutingContextImpl implements RoutingContext {
 
     @Override
     public void next() throws Throwable {
-        ScxHttpException e = new NotFoundException();
+        HttpException e = new NotFoundException();
 
         while (iter.hasNext()) {
             var route = iter.next();

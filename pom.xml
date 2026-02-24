@@ -69,6 +69,12 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>dev.scx</groupId>
+            <artifactId>scx-http</artifactId>
+            <version>${scx-http.version}</version>
+        </dependency>
+
         <!-- TestNG 测试包 -->
         <dependency>
             <groupId>org.testng</groupId>
@@ -82,6 +88,7 @@
     <properties>
 
         <!-- *********************** 以下为依赖包版本 *********************** -->
+        <scx-http.version>0.4.0</scx-http.version>
         <testng.version>7.11.0</testng.version>
 
     </properties>

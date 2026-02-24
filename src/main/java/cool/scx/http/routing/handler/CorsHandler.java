@@ -1,11 +1,12 @@
 package cool.scx.http.routing.handler;
 
-import cool.scx.function.Function1Void;
-import cool.scx.http.ScxHttpServerResponse;
-import cool.scx.http.exception.ForbiddenException;
-import cool.scx.http.headers.ScxHttpHeaderName;
-import cool.scx.http.method.HttpMethod;
-import cool.scx.http.method.ScxHttpMethod;
+import dev.scx.function.Function1Void;
+import dev.scx.http.ScxHttpServerResponse;
+import dev.scx.http.exception.ForbiddenException;
+import dev.scx.http.headers.HttpHeaderName;
+import dev.scx.http.headers.ScxHttpHeaderName;
+import dev.scx.http.method.HttpMethod;
+import dev.scx.http.method.ScxHttpMethod;
 import cool.scx.http.routing.RoutingContext;
 
 import java.util.Arrays;
@@ -13,7 +14,7 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import static cool.scx.http.headers.HttpFieldName.*;
+import static dev.scx.http.headers.HttpHeaderName.*;
 import static java.util.Collections.addAll;
 
 /// CorsHandler
@@ -121,7 +122,7 @@ public class CorsHandler implements Function1Void<RoutingContext, Throwable> {
                     response.setHeader(ACCESS_CONTROL_MAX_AGE, maxAgeSeconds);
                 }
 
-                response.status(204).send();
+                response.statusCode(204).send();
 
             } else {
                 addCredentialsAndOriginHeader(response, origin);

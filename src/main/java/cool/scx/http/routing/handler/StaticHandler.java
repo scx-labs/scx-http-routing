@@ -1,7 +1,7 @@
 package cool.scx.http.routing.handler;
 
-import cool.scx.function.Function1Void;
-import cool.scx.http.exception.NotFoundException;
+import dev.scx.function.Function1Void;
+import dev.scx.http.exception.NotFoundException;
 import cool.scx.http.routing.RoutingContext;
 
 import java.io.IOException;
@@ -11,9 +11,10 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
-import static cool.scx.http.headers.HttpFieldName.*;
-import static cool.scx.http.method.HttpMethod.GET;
-import static cool.scx.http.method.HttpMethod.HEAD;
+
+import static dev.scx.http.headers.HttpHeaderName.*;
+import static dev.scx.http.method.HttpMethod.GET;
+import static dev.scx.http.method.HttpMethod.HEAD;
 import static cool.scx.http.routing.handler.StaticHelper.sendStatic;
 
 /// StaticHandler
@@ -56,7 +57,7 @@ public class StaticHandler implements Function1Void<RoutingContext, Throwable> {
             var ifModifiedSince = request.getHeader("If-Modified-Since");
 
             if (etag.equals(ifNoneMatch) || lastModifiedTime.equals(ifModifiedSince)) {
-                routingContext.response().status(304).send();
+                routingContext.response().statusCode(304).send();
                 return;
             }
 
@@ -64,7 +65,7 @@ public class StaticHandler implements Function1Void<RoutingContext, Throwable> {
             routingContext.response().setHeader(ETAG, etag);
             routingContext.response().setHeader(LAST_MODIFIED, lastModifiedTime);
 
-            sendStatic(filePath, routingContext);
+            sendStatic(filePath.toFile(), routingContext);
         } catch (IOException e) {
             routingContext.next();
         }

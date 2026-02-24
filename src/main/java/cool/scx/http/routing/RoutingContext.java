@@ -1,8 +1,8 @@
 package cool.scx.http.routing;
 
-import cool.scx.http.ScxHttpServerRequest;
-import cool.scx.http.ScxHttpServerResponse;
-import cool.scx.http.parameters.Parameters;
+import dev.scx.http.ScxHttpServerRequest;
+import dev.scx.http.ScxHttpServerResponse;
+import dev.scx.http.parameters.Parameters;
 
 import java.util.Map;
 

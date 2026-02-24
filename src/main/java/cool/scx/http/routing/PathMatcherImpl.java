@@ -1,7 +1,7 @@
 package cool.scx.http.routing;
 
-import cool.scx.http.parameters.Parameters;
-import cool.scx.http.parameters.ParametersWritable;
+import dev.scx.http.parameters.Parameters;
+import dev.scx.http.parameters.ParametersWritable;
 
 import java.util.*;
 import java.util.regex.Matcher;

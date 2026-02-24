@@ -1,20 +1,18 @@
 package cool.scx.http.routing.handler;
 
-import cool.scx.http.exception.NotFoundException;
-import cool.scx.http.headers.range.Range;
-import cool.scx.http.media_type.FileFormat;
-import cool.scx.http.media_type.ScxMediaType;
 import cool.scx.http.routing.RoutingContext;
-import cool.scx.io.IOHelper;
+import dev.scx.http.exception.NotFoundException;
+import dev.scx.http.media_type.FileFormat;
+import dev.scx.http.media_type.ScxMediaType;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
-import static cool.scx.http.headers.HttpFieldName.ACCEPT_RANGES;
-import static cool.scx.http.headers.HttpFieldName.CONTENT_RANGE;
-import static cool.scx.http.media_type.MediaType.*;
-import static cool.scx.http.status.HttpStatus.PARTIAL_CONTENT;
+import static dev.scx.http.headers.HttpHeaderName.ACCEPT_RANGES;
+import static dev.scx.http.headers.HttpHeaderName.CONTENT_RANGE;
+import static dev.scx.http.media_type.MediaType.*;
+import static dev.scx.http.status_code.HttpStatusCode.PARTIAL_CONTENT;
 
 /// StaticHelper
 ///
@@ -22,66 +20,59 @@ import static cool.scx.http.status.HttpStatus.PARTIAL_CONTENT;
 /// @version 0.0.1
 public class StaticHelper {
 
-    public static void sendStatic(Path path, RoutingContext context) {
+    public static void sendStatic(File file, RoutingContext context) throws IOException {
         var request = context.request();
         var response = context.response();
 
         //参数校验
-        var notExists = Files.notExists(path);
+        var notExists = !file.exists();
         if (notExists) {
             throw new NotFoundException();
         }
         //获取文件长度
-        var fileLength = IOHelper.getFileSize(path);
+        var fileLength = file.length();
 
         //1, 通知客户端我们支持 分段加载
         response.headers().set(ACCEPT_RANGES, "bytes");
 
-        //2, 尝试解析 Range
-        var rangeStr = request.getHeader("Range");
-
-        //3, 设置 contentType (只有在未设置的时候才设置)
+        //2, 设置 contentType (只有在未设置的时候才设置)
         if (response.contentType() == null) {
-            var contentType = getMediaTypeByFile(path);
+            var contentType = getMediaTypeByFile(file);
             response.contentType(contentType);
         }
 
-        //3, 如果为空 则发送全量数据
-        if (rangeStr == null) {
-            response.send(path);
+        //3, 尝试解析 Range
+        var range = request.headers().range();
+
+        //4, 如果为空 则发送全量数据
+        if (range == null) {
+            response.send(file);
             return;
         }
 
-        //4, 尝试解析
-        var ranges = Range.parseRange(rangeStr);
-        //目前我们只支持单个的部分请求
-        if (ranges.size() == 1) {
-            //获取第一个分段请求
-            var range = ranges.get(0);
-            var start = range.getStart();
-            var end = range.getEnd(fileLength);
+        //获取第一个分段请求
 
-            //计算需要发送的长度
-            var length = end - start + 1;
+        var start = range.getStart();
+        var end = range.getEnd(fileLength);
 
-            //我们需要构建如下的结构
-            // status: 206 Partial Content
-            response.status(PARTIAL_CONTENT);
-            // Content-Range: bytes 0-1023/146515
-            response.setHeader(CONTENT_RANGE, "bytes " + start + "-" + end + "/" + fileLength);
-            // Content-Length: 1024
-            response.contentLength(length);
-            //发送
-            response.send(path, start, length);
-        } else {
-            // 这里是多个 部分请求 我们暂时不支持 所以全量发送
-            response.send(path);
-        }
+        //计算需要发送的长度
+        var length = end - start + 1;
+
+
+        //我们需要构建如下的结构
+        // status: 206 Partial Content
+        response.statusCode(PARTIAL_CONTENT);
+        // Content-Range: bytes 0-1023/146515
+        response.setHeader(CONTENT_RANGE, "bytes " + start + "-" + end + "/" + fileLength);
+        // Content-Length: 1024
+        response.contentLength(length);
+        //发送
+        response.send(file, start, length);
 
     }
 
-    public static ScxMediaType getMediaTypeByFile(Path path) {
-        var fileFormat = FileFormat.findByFileName(path.getFileName().toString());
+    public static ScxMediaType getMediaTypeByFile(File path) {
+        var fileFormat = FileFormat.findByFileName(path.getName());
         if (fileFormat == null) {
             fileFormat = FileFormat.BIN;
         }

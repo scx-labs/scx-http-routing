@@ -1,7 +1,7 @@
 package cool.scx.http.routing;
 
-import cool.scx.function.Function1Void;
-import cool.scx.http.method.HttpMethod;
+import dev.scx.function.Function1Void;
+import dev.scx.http.method.HttpMethod;
 
 import java.util.HashSet;
 import java.util.Set;

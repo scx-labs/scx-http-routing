@@ -1,6 +1,6 @@
 package cool.scx.http.routing;
 
-import cool.scx.http.ScxHttpServerRequest;
+import dev.scx.http.ScxHttpServerRequest;
 
 public interface TypeMatcher {
 

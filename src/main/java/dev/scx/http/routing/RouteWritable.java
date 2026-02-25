@@ -3,8 +3,9 @@ package dev.scx.http.routing;
 import dev.scx.function.Function1Void;
 import dev.scx.http.ScxHttpServerRequest;
 import dev.scx.http.method.HttpMethod;
+import dev.scx.http.routing.type_matcher.TypeMatcher;
 
-import static dev.scx.http.routing.TypeMatcher.*;
+import static dev.scx.http.routing.type_matcher.TypeMatcher.*;
 
 /// RouteWritable
 ///

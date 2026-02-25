@@ -6,7 +6,7 @@ import dev.scx.http.ScxHttpServerRequest;
 ///
 /// @author scx567888
 /// @version 0.0.1
-final class NotTypeMatcher implements TypeMatcher{
+final class NotTypeMatcher implements TypeMatcher {
 
     private final Class<? extends ScxHttpServerRequest> requestType;
 

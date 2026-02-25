@@ -1,7 +1,10 @@
 package dev.scx.http.routing;
 
 import dev.scx.function.Function1Void;
+import dev.scx.http.ScxHttpServerRequest;
 import dev.scx.http.method.HttpMethod;
+
+import static dev.scx.http.routing.TypeMatcher.*;
 
 /// RouteWritable
 ///
@@ -20,5 +23,13 @@ public interface RouteWritable extends Route {
     RouteWritable order(int order);
 
     RouteWritable handler(Function1Void<RoutingContext, ?> handler);
+
+    default RouteWritable typeIs(Class<? extends ScxHttpServerRequest> requestType){
+        return type(is(requestType));
+    }
+
+    default RouteWritable typeNot(Class<? extends ScxHttpServerRequest> requestType){
+        return type(not(requestType));
+    }
 
 }

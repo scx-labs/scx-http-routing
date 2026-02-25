@@ -1,7 +1,7 @@
 package dev.scx.http.routing.test;
 
 import dev.scx.http.method.ScxHttpMethod;
-import dev.scx.http.routing.MethodMatcher;
+import dev.scx.http.routing.method_matcher.MethodMatcher;
 
 import static dev.scx.http.method.HttpMethod.GET;
 import static dev.scx.http.method.HttpMethod.POST;

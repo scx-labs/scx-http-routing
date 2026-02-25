@@ -2,6 +2,8 @@ package dev.scx.http.routing;
 
 import dev.scx.function.Function1Void;
 import dev.scx.http.method.HttpMethod;
+import dev.scx.http.routing.method_matcher.MethodMatcher;
+import dev.scx.http.routing.type_matcher.TypeMatcher;
 
 import java.util.Set;
 

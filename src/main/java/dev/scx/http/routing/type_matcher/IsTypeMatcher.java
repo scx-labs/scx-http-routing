@@ -1,0 +1,22 @@
+package dev.scx.http.routing.type_matcher;
+
+import dev.scx.http.ScxHttpServerRequest;
+
+/// IsTypeMatcher
+///
+/// @author scx567888
+/// @version 0.0.1
+final class IsTypeMatcher implements TypeMatcher {
+
+    private final Class<? extends ScxHttpServerRequest> requestType;
+
+    public IsTypeMatcher(Class<? extends ScxHttpServerRequest> requestType) {
+        this.requestType = requestType;
+    }
+
+    @Override
+    public boolean matches(ScxHttpServerRequest request) {
+        return requestType.isInstance(request);
+    }
+
+}

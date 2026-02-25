@@ -10,6 +10,14 @@ public interface TypeMatcher {
         return ANY;
     }
 
+    static TypeMatcher is(Class<? extends ScxHttpServerRequest> requestType) {
+        return requestType::isInstance;
+    }
+
+    static TypeMatcher not(Class<? extends ScxHttpServerRequest> requestType) {
+        return request -> !requestType.isInstance(request);
+    }
+
     boolean matches(ScxHttpServerRequest request);
 
 }

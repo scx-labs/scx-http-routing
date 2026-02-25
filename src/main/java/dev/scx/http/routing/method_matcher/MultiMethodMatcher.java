@@ -1,18 +1,18 @@
-package dev.scx.http.routing;
+package dev.scx.http.routing.method_matcher;
 
 import dev.scx.http.method.ScxHttpMethod;
 
 import java.util.Set;
 
-/// MethodMatcherImpl
+/// MultiMethodMatcher
 ///
 /// @author scx567888
 /// @version 0.0.1
-class MethodMatcherImpl implements MethodMatcher {
+final class MultiMethodMatcher implements MethodMatcher {
 
     private final Set<ScxHttpMethod> methods;
 
-    MethodMatcherImpl(ScxHttpMethod... methods) {
+    public MultiMethodMatcher(ScxHttpMethod... methods) {
         this.methods = Set.of(methods);
     }
 

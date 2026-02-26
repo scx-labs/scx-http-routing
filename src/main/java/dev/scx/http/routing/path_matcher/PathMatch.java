@@ -1,6 +1,9 @@
 package dev.scx.http.routing.path_matcher;
 
-
+/// PathMatch
+///
+/// @author scx567888
+/// @version 0.0.1
 public interface PathMatch {
 
     /// 按捕获顺序查询捕获值 (从 0 开始编号).

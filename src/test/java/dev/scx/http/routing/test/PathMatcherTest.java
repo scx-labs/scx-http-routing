@@ -1,6 +1,6 @@
 package dev.scx.http.routing.test;
 
-import dev.scx.http.routing.PathMatcher;
+import dev.scx.http.routing.path_matcher.PathMatcher;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -13,38 +13,32 @@ public class PathMatcherTest {
     @Test
     public static void test1() {
         var matcher = PathMatcher.of("/a/b/:id");
-        var result = matcher.matches("/a/b/苹果");
-        Assert.assertTrue(result.accepted());
-        Assert.assertEquals(result.pathParams().get("id"), "苹果");
+        var result = matcher.match("/a/b/苹果");
+        Assert.assertEquals(result.get("id"), "苹果");
 
-        var result1 = matcher.matches("/a/b/ 空格 ");
-        Assert.assertTrue(result1.accepted());
-        Assert.assertEquals(result1.pathParams().get("id"), " 空格 ");
+        var result1 = matcher.match("/a/b/ 空格 ");
+        Assert.assertEquals(result1.get("id"), " 空格 ");
 
-        var result2 = matcher.matches("/a/b/c/ ");
-        Assert.assertFalse(result2.accepted());
+        var result2 = matcher.match("/a/b/c/ ");
+        Assert.assertNull(result2);
 
         var matcher2 = PathMatcher.of("/a/b/*");
 
-        var result5 = matcher2.matches("/a/b/");
-        Assert.assertTrue(result5.accepted());
-        Assert.assertEquals(result5.pathParams().get("*"), "");
+        var result5 = matcher2.match("/a/b/");
+        Assert.assertEquals(result5.get("*"), "");
 
-        var result6 = matcher2.matches("/a/b/c/d/f/e/f");
-        Assert.assertTrue(result6.accepted());
-        Assert.assertEquals(result6.pathParams().get("*"), "c/d/f/e/f");
+        var result6 = matcher2.match("/a/b/c/d/f/e/f");
+        Assert.assertEquals(result6.get("*"), "c/d/f/e/f");
 
         var matcher3 = PathMatcher.of("/a/b/:name/*");
 
-        var result7 = matcher3.matches("/a/b/小明/");
-        Assert.assertTrue(result7.accepted());
-        Assert.assertEquals(result7.pathParams().get("name"), "小明");
-        Assert.assertEquals(result7.pathParams().get("*"), "");
+        var result7 = matcher3.match("/a/b/小明/");
+        Assert.assertEquals(result7.get("name"), "小明");
+        Assert.assertEquals(result7.get("*"), "");
 
-        var result8 = matcher3.matches("/a/b/小明/9");
-        Assert.assertTrue(result8.accepted());
-        Assert.assertEquals(result8.pathParams().get("name"), "小明");
-        Assert.assertEquals(result8.pathParams().get("*"), "9");
+        var result8 = matcher3.match("/a/b/小明/9");
+        Assert.assertEquals(result8.get("name"), "小明");
+        Assert.assertEquals(result8.get("*"), "9");
     }
 
 }

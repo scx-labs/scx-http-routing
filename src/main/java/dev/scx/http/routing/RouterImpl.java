@@ -3,47 +3,58 @@ package dev.scx.http.routing;
 import dev.scx.http.ScxHttpServerRequest;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.TreeSet;
 
-/// Router
+/// RouterImpl
 ///
 /// @author scx567888
 /// @version 0.0.1
-public class RouterImpl implements Router {
+public final class RouterImpl implements Router {
 
-    private static final Comparator<Route> ROUTE_COMPARATOR = (o1, o2) -> {
-        var compare = Integer.compare(o1.order(), o2.order());
-        if (compare == 0) {
-            if (o1.equals(o2)) {
-                return 0;
-            }
-            return 1;
-        }
-        return compare;
-    };
-
-    final TreeSet<Route> routes;
+    private final ArrayList<Route> routes;
 
     public RouterImpl() {
-        this.routes = new TreeSet<>(ROUTE_COMPARATOR);
+        this.routes = new ArrayList<>();
     }
 
     @Override
-    public RouterImpl addRoute(Route route) {
-        routes.add(route);
+    public Router add(Route route) {
+        int idx = upperBound(route.order()); // 插到相同 order 段的末尾
+        routes.add(idx, route);
         return this;
     }
 
     @Override
-    public List<Route> getRoutes() {
-        return new ArrayList<>(routes);
+    public Router remove(Route route) {
+        routes.remove(route);
+        return this;
     }
 
     @Override
-    public void apply(ScxHttpServerRequest scxHttpRequest) throws Throwable {
-        new RoutingContextImpl(this, scxHttpRequest).next();
+    public List<Route> routes() {
+        return List.copyOf(routes);
+    }
+
+    @Override
+    public void apply(ScxHttpServerRequest serverRequest) throws Throwable {
+        new RoutingContextImpl(routes, serverRequest).next();
+    }
+
+    /// 二分法查找, 返回第一个 route.order() > order 的位置 (upper bound).
+    /// 这样相同 order 的新 route 会插到已有相同 order 的后面, 保持注册顺序.
+    private int upperBound(int order) {
+        int lo = 0;
+        int hi = routes.size();
+        while (lo < hi) {
+            int mid = (lo + hi) / 2;
+            int midOrder = routes.get(mid).order();
+            if (midOrder <= order) {
+                lo = mid + 1;
+            } else {
+                hi = mid;
+            }
+        }
+        return lo;
     }
 
 }

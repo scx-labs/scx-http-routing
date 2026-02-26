@@ -1,11 +1,9 @@
 package dev.scx.http.routing;
 
 import dev.scx.function.Function1Void;
-import dev.scx.http.method.HttpMethod;
 import dev.scx.http.routing.method_matcher.MethodMatcher;
+import dev.scx.http.routing.path_matcher.PathMatcher;
 import dev.scx.http.routing.type_matcher.TypeMatcher;
-
-import java.util.Set;
 
 /// Route 路由只保存状态不做行为处理
 ///
@@ -13,21 +11,14 @@ import java.util.Set;
 /// @version 0.0.1
 public interface Route {
 
-    static RouteWritable of() {
-        return new RouteImpl();
-    }
-
-    String path();
-
-    Set<HttpMethod> methods();
+    /// 路由优先级: 数值越小越先匹配, 相同 order 按注册顺序匹配.
+    int order();
 
     TypeMatcher typeMatcher();
 
     PathMatcher pathMatcher();
 
     MethodMatcher methodMatcher();
-
-    int order();
 
     Function1Void<RoutingContext, ?> handler();
 

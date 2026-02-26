@@ -1,17 +1,21 @@
-package dev.scx.http.routing;
+package dev.scx.http.routing.path_matcher;
 
 import dev.scx.http.parameters.Parameters;
 import dev.scx.http.parameters.ParametersWritable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+//todo 需要重构
 
 /// PathMatcherImpl (Some Code Copy From Vertx RouteImpl)
 ///
 /// @author scx567888
 /// @version 0.0.1
-public class PathMatcherImpl implements PathMatcher {
+public class TemplatePathMatcher implements PathMatcher {
 
     // Allow end users to select either the regular valid characters or the extender pattern
     private static final String RE_VAR_NAME = "[A-Za-z0-9_]+";
@@ -19,26 +23,48 @@ public class PathMatcherImpl implements PathMatcher {
     // Pattern for :<token name> in path
     private static final Pattern RE_TOKEN_SEARCH = Pattern.compile(":(" + RE_VAR_NAME + ")");
 
-    // Pattern for (?<token name>) in path
-    private static final Pattern RE_TOKEN_NAME_SEARCH = Pattern.compile("\\(\\?<(" + RE_VAR_NAME + ")>");
-
     // intersection of regex chars and https://tools.ietf.org/html/rfc3986#section-3.3
     private static final Pattern RE_OPERATORS_NO_STAR = Pattern.compile("([()$+.])");
 
     private String path;
     private Pattern pattern;
     private List<String> groups;
-    private Set<String> namedGroupsInRegex;
     private boolean pathEndsWithSlash;
     private boolean exactPath;
 
-    PathMatcherImpl() {
+    TemplatePathMatcher(String path) {
+        if ("".equals(path) || path.charAt(0) != '/') {
+            throw new IllegalArgumentException("Path must start with /");
+        }
         this.path = null;
         this.pattern = null;
         this.groups = null;
-        this.namedGroupsInRegex = null;
         this.pathEndsWithSlash = false;
-        this.exactPath = true;
+        // See if the path is a wildcard "*" is present - If so we need to configure this path to be not exact
+        if (path.charAt(path.length() - 1) != '*') {
+            this.exactPath = true;
+            this.path = path;
+        } else {
+            this.exactPath = false;
+            this.path = path.substring(0, path.length() - 1);
+        }
+
+        this.pathEndsWithSlash = this.path.endsWith("/");
+
+        // See if the path contains ":" - if so then it contains parameter capture groups and we have to generate
+        // a regex for that
+        int params = 0;
+        for (int i = 0; i < path.length(); i = i + 1) {
+            if (path.charAt(i) == ':') {
+                params = params + 1;
+            }
+        }
+        if (params > 0) {
+            int found = createPatternRegex(path);
+            if (params != found) {
+                throw new IllegalArgumentException("path param does not follow the variable naming rules, expected (" + params + ") found (" + found + ")");
+            }
+        }
     }
 
     private static boolean pathMatchesExact(String base, String other, boolean significantSlash) {
@@ -67,40 +93,6 @@ public class PathMatcherImpl implements PathMatcher {
 
     private static <T> boolean isEmpty(Collection<T> collection) {
         return collection == null || collection.isEmpty();
-    }
-
-    void checkPath(String path) {
-        if ("".equals(path) || path.charAt(0) != '/') {
-            throw new IllegalArgumentException("Path must start with /");
-        }
-    }
-
-    void setPath(String path) {
-        // See if the path is a wildcard "*" is present - If so we need to configure this path to be not exact
-        if (path.charAt(path.length() - 1) != '*') {
-            this.exactPath = true;
-            this.path = path;
-        } else {
-            this.exactPath = false;
-            this.path = path.substring(0, path.length() - 1);
-        }
-
-        this.pathEndsWithSlash = this.path.endsWith("/");
-
-        // See if the path contains ":" - if so then it contains parameter capture groups and we have to generate
-        // a regex for that
-        int params = 0;
-        for (int i = 0; i < path.length(); i = i + 1) {
-            if (path.charAt(i) == ':') {
-                params = params + 1;
-            }
-        }
-        if (params > 0) {
-            int found = createPatternRegex(path);
-            if (params != found) {
-                throw new IllegalArgumentException("path param does not follow the variable naming rules, expected (" + params + ") found (" + found + ")");
-            }
-        }
     }
 
     private int createPatternRegex(String path) {
@@ -138,26 +130,6 @@ public class PathMatcherImpl implements PathMatcher {
         this.groups = groups;
         this.pattern = Pattern.compile(path);
         return index;
-    }
-
-    void setRegex(String regex) {
-        this.pattern = Pattern.compile(regex);
-        this.exactPath = true;
-        findNamedGroups(this.pattern.pattern());
-    }
-
-    private void findNamedGroups(String path) {
-        Matcher m = RE_TOKEN_NAME_SEARCH.matcher(path);
-        while (m.find()) {
-            this.addNamedGroupInRegex(m.group(1));
-        }
-    }
-
-    private void addNamedGroupInRegex(String namedGroupInRegex) {
-        if (this.namedGroupsInRegex == null) {
-            this.namedGroupsInRegex = new HashSet<>();
-        }
-        this.namedGroupsInRegex.add(namedGroupInRegex);
     }
 
     private boolean pathMatches(String requestPath, ParametersWritable<String, String> pathParams) {
@@ -264,14 +236,6 @@ public class PathMatcherImpl implements PathMatcher {
                     } else {
                         // Straight regex - un-named params
                         // decode the path as it could contain escaped chars.
-                        if (!isEmpty(namedGroupsInRegex)) {
-                            for (String namedGroup : namedGroupsInRegex) {
-                                String namedGroupValue = m.group(namedGroup);
-                                if (namedGroupValue != null) {
-                                    pathParams.add(namedGroup, namedGroupValue);
-                                }
-                            }
-                        }
                         for (int i = 0; i < m.groupCount(); i = i + 1) {
                             String group = m.group(i + 1);
                             if (group != null) {
@@ -290,10 +254,13 @@ public class PathMatcherImpl implements PathMatcher {
     }
 
     @Override
-    public MatchResult matches(String path) {
+    public PathMatch match(String path) {
         ParametersWritable<String, String> pathParams = Parameters.of();
         var accepted = matches(path, pathParams);
-        return new MatchResult(accepted, pathParams);
+        if (!accepted) {
+            return null;
+        }
+        return new TemplatePathMatch(accepted, pathParams);
     }
 
     public String path() {

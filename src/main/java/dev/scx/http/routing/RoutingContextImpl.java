@@ -1,46 +1,49 @@
 package dev.scx.http.routing;
 
 import dev.scx.http.ScxHttpServerRequest;
-import dev.scx.http.ScxHttpServerResponse;
 import dev.scx.http.exception.HttpException;
 import dev.scx.http.exception.MethodNotAllowedException;
 import dev.scx.http.exception.NotFoundException;
-import dev.scx.http.parameters.Parameters;
+import dev.scx.http.routing.path_matcher.PathMatch;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-/// RoutingContext
+/// RoutingContextImpl
 ///
 /// @author scx567888
 /// @version 0.0.1
-@SuppressWarnings("unchecked")
-public class RoutingContextImpl implements RoutingContext {
+public final class RoutingContextImpl implements RoutingContext {
 
-    private final RouterImpl router;
-    private final ScxHttpServerRequest request;
     private final Iterator<Route> iter;
+    private final ScxHttpServerRequest request;
     private final Map<String, Object> data;
-    private Parameters<String, String> nowPathParams;
+    private PathMatch nowPathMatch;
 
-    RoutingContextImpl(RouterImpl router, ScxHttpServerRequest request) {
-        this.router = router;
+    RoutingContextImpl(Iterable<Route> routes, ScxHttpServerRequest request) {
+        this.iter = routes.iterator();
         this.request = request;
-        this.iter = router.routes.iterator();
         this.data = new HashMap<>();
     }
 
     @Override
-    public <T extends ScxHttpServerRequest> T request() {
-        return (T) request;
+    public ScxHttpServerRequest request() {
+        return request;
     }
 
     @Override
-    public <T extends ScxHttpServerResponse> T response() {
-        return (T) request.response();
+    public PathMatch pathMatch() {
+        return nowPathMatch;
     }
 
+    @Override
+    public Map<String, Object> data() {
+        return data;
+    }
+
+    /// 任何路径都不匹配 抛出 404.
+    /// 存在路径匹配, 但是任何方法都不匹配 抛出 405.
     @Override
     public void next() throws Throwable {
         HttpException e = new NotFoundException();
@@ -48,27 +51,28 @@ public class RoutingContextImpl implements RoutingContext {
         while (iter.hasNext()) {
             var route = iter.next();
 
-            //匹配类型
+            // 1, 优先匹配类型
             var typeMatcherResult = route.typeMatcher().matches(request);
 
             if (!typeMatcherResult) {
                 continue;
             }
 
-            //匹配路径
-            var pathMatchResult = route.pathMatcher().matches(request.path());
+            // 2, 然后匹配路径
+            var pathMatch = route.pathMatcher().match(request.path());
 
-            this.nowPathParams = pathMatchResult.pathParams();
-
-            //匹配不到就下一次
-            if (!pathMatchResult.accepted()) {
+            // 匹配不到就下一次
+            if (pathMatch == null) {
                 continue;
             }
 
-            //匹配方法
+            this.nowPathMatch = pathMatch;
+
+            // 3, 最后匹配方法
             var methodMatchResult = route.methodMatcher().matches(request.method());
 
-            //匹配方法失败
+            // 匹配方法失败.
+            // 这里不直接抛出异常, 因为后续可能其他路由会匹配成功,
             if (!methodMatchResult) {
                 e = new MethodNotAllowedException();
                 continue;
@@ -81,16 +85,6 @@ public class RoutingContextImpl implements RoutingContext {
         }
 
         throw e;
-    }
-
-    @Override
-    public Parameters<String, String> pathParams() {
-        return this.nowPathParams;
-    }
-
-    @Override
-    public <T> Map<String, T> data() {
-        return (Map<String, T>) data;
     }
 
 }

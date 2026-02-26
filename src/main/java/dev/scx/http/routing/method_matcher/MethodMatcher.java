@@ -19,7 +19,7 @@ public interface MethodMatcher {
             throw new NullPointerException("methods must not be null");
         }
         if (methods.length == 0) {
-            throw new IllegalArgumentException("MethodMatcher.of(...) requires at least one method. Use MethodMatcher.any() for no restriction.");
+            throw new IllegalArgumentException("methods must not be empty");
         }
         if (methods.length == 1) {
             return new SingleMethodMatcher(methods[0]);

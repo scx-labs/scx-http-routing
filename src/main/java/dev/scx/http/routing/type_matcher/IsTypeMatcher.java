@@ -11,6 +11,9 @@ final class IsTypeMatcher implements TypeMatcher {
     private final Class<? extends ScxHttpServerRequest> requestType;
 
     public IsTypeMatcher(Class<? extends ScxHttpServerRequest> requestType) {
+        if (requestType == null) {
+            throw new NullPointerException("requestType must not be null");
+        }
         this.requestType = requestType;
     }
 

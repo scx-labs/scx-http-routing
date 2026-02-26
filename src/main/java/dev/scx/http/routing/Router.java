@@ -15,20 +15,21 @@ public interface Router extends Function1Void<ScxHttpServerRequest, Throwable> {
         return new RouterImpl();
     }
 
-    Router addRoute(Route route);
+    /// 添加一个路由
+    /// 路由按 [Route#order()] 从小到大匹配:
+    ///
+    /// - order 越小, 匹配优先级越高.
+    /// - order 相同的路由, 按注册顺序匹配.
+    Router add(Route route);
 
-    List<Route> getRoutes();
+    /// 移除一个路由
+    Router remove(Route route);
 
-    default RouteWritable route() {
-        var route = Route.of();
-        addRoute(route);
-        return route;
-    }
+    /// 只读快照
+    List<Route> routes();
 
-    default RouteWritable route(int order) {
-        var route = Route.of().order(order);
-        addRoute(route);
-        return route;
+    default Router add(RouteBuilder routeBuilder) {
+        return add(routeBuilder.build());
     }
 
 }

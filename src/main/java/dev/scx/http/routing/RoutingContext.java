@@ -15,9 +15,9 @@ public interface RoutingContext {
 
     PathMatch pathMatch();
 
-    void next() throws Throwable;
-
     Map<String, Object> data();
+
+    void next() throws Throwable;
 
     default <T extends ScxHttpServerRequest> T request(Class<T> requestType) {
         return requestType.cast(request());

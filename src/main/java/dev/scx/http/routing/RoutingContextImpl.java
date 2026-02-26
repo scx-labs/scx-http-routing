@@ -1,7 +1,6 @@
 package dev.scx.http.routing;
 
 import dev.scx.http.ScxHttpServerRequest;
-import dev.scx.http.ScxHttpServerResponse;
 import dev.scx.http.exception.HttpException;
 import dev.scx.http.exception.MethodNotAllowedException;
 import dev.scx.http.exception.NotFoundException;
@@ -11,15 +10,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-/// RoutingContext
+/// RoutingContextImpl
 ///
 /// @author scx567888
 /// @version 0.0.1
-@SuppressWarnings("unchecked")
-public class RoutingContextImpl implements RoutingContext {
+public final class RoutingContextImpl implements RoutingContext {
 
-    private final ScxHttpServerRequest request;
     private final Iterator<Route> iter;
+    private final ScxHttpServerRequest request;
     private final Map<String, Object> data;
     private PathMatch nowPathMatch;
 
@@ -30,13 +28,18 @@ public class RoutingContextImpl implements RoutingContext {
     }
 
     @Override
-    public <T extends ScxHttpServerRequest> T request() {
-        return (T) request;
+    public ScxHttpServerRequest request() {
+        return request;
     }
 
     @Override
-    public <T extends ScxHttpServerResponse> T response() {
-        return (T) request.response();
+    public PathMatch pathMatch() {
+        return nowPathMatch;
+    }
+
+    @Override
+    public Map<String, Object> data() {
+        return data;
     }
 
     /// 任何路径都不匹配 抛出 404.
@@ -82,16 +85,6 @@ public class RoutingContextImpl implements RoutingContext {
         }
 
         throw e;
-    }
-
-    @Override
-    public PathMatch pathMatch() {
-        return this.nowPathMatch;
-    }
-
-    @Override
-    public <T> Map<String, T> data() {
-        return (Map<String, T>) data;
     }
 
 }

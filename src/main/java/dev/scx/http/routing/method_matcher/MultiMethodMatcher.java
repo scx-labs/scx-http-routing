@@ -30,9 +30,4 @@ final class MultiMethodMatcher implements MethodMatcher {
             .collect(Collectors.joining("|"));
     }
 
-    public Set<ScxHttpMethod> methods() {
-        // methods 是不可变的 我们可以安全返回.
-        return methods;
-    }
-
 }

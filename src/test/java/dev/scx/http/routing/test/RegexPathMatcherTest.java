@@ -25,8 +25,8 @@ public class RegexPathMatcherTest {
 
         Assert.assertEquals(match.capture(0), "123");
         Assert.assertEquals(match.capture(1), "456");
-        Assert.assertEquals(match.capture(2), null);
-        Assert.assertEquals(match.capture("id"), null);
+        Assert.assertNull(match.capture(2));
+        Assert.assertNull(match.capture("id"));
     }
 
     /// 命名捕获 + index
@@ -41,7 +41,7 @@ public class RegexPathMatcherTest {
 
         Assert.assertEquals(match.capture("userId"), "42");
         Assert.assertEquals(match.capture("bookId"), "99");
-        Assert.assertEquals(match.capture("xxx"), null);
+        Assert.assertNull(match.capture("xxx"));
     }
 
     /// 命名 + 非命名混合，验证顺序
@@ -67,10 +67,10 @@ public class RegexPathMatcherTest {
         PathMatch match = pathMatcher.match("/users/123");
 
         Assert.assertEquals(match.capture(0), "123");
-        Assert.assertEquals(match.capture(1), null);
+        Assert.assertNull(match.capture(1));
 
         Assert.assertEquals(match.capture("id"), "123");
-        Assert.assertEquals(match.capture("postId"), null);
+        Assert.assertNull(match.capture("postId"));
     }
 
     /// 可选捕获（第二种路径）
@@ -93,7 +93,7 @@ public class RegexPathMatcherTest {
         PathMatcher pathMatcher = PathMatcher.ofRegex("/users/(\\d+)");
         PathMatch match = pathMatcher.match("/users/abc");
 
-        Assert.assertEquals(match, null);
+        Assert.assertNull(match);
     }
 
     /// 验证 matches() 是全匹配
@@ -102,8 +102,7 @@ public class RegexPathMatcherTest {
         PathMatcher pathMatcher = PathMatcher.ofRegex("/users/(\\d+)");
         PathMatch match = pathMatcher.match("/foo/users/123/bar");
 
-        Assert.assertEquals(match, null);
+        Assert.assertNull(match);
     }
-
 
 }

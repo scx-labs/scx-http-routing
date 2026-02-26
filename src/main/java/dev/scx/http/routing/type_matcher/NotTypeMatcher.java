@@ -22,4 +22,9 @@ final class NotTypeMatcher implements TypeMatcher {
         return !requestType.isInstance(request);
     }
 
+    @Override
+    public String toString() {
+        return "not(" + requestType.getSimpleName() + ")";
+    }
+
 }

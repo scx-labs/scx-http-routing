@@ -14,21 +14,13 @@ import java.util.Set;
 /// @version 0.0.1
 public interface Route {
 
-    static RouteWritable of() {
-        return new RouteImpl();
-    }
-
-    String path();
-
-    Set<HttpMethod> methods();
+    int order();
 
     TypeMatcher typeMatcher();
 
     PathMatcher pathMatcher();
 
     MethodMatcher methodMatcher();
-
-    int order();
 
     Function1Void<RoutingContext, ?> handler();
 

@@ -2,7 +2,7 @@ package dev.scx.http.routing;
 
 import dev.scx.http.ScxHttpServerRequest;
 import dev.scx.http.ScxHttpServerResponse;
-import dev.scx.http.parameters.Parameters;
+import dev.scx.http.routing.path_matcher.PathMatch;
 
 import java.util.Map;
 
@@ -19,7 +19,7 @@ public interface RoutingContext {
 
     void next() throws Throwable;
 
-    Parameters<String, String> pathParams();
+    PathMatch pathMatch();
 
     <T> Map<String, T> data();
 

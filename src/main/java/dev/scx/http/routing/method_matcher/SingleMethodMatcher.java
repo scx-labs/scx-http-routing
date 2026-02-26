@@ -27,4 +27,8 @@ final class SingleMethodMatcher implements MethodMatcher {
         return method.value();
     }
 
+    public ScxHttpMethod method() {
+        return method;
+    }
+
 }

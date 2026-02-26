@@ -7,6 +7,8 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//todo 需要重构
+
 /// PathMatcherImpl (Some Code Copy From Vertx RouteImpl)
 ///
 /// @author scx567888
@@ -293,7 +295,10 @@ public class TemplatePathMatcher implements PathMatcher {
     public PathMatch match(String path) {
         ParametersWritable<String, String> pathParams = Parameters.of();
         var accepted = matches(path, pathParams);
-        return new PathMatch(accepted, pathParams);
+        if (!accepted) {
+            return null;
+        }
+        return new TemplatePathMatch(accepted, pathParams);
     }
 
     public String path() {

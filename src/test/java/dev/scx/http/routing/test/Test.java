@@ -1,7 +1,7 @@
 package dev.scx.http.routing.test;
 
-import dev.scx.http.routing.Router;
 import dev.scx.http.exception.UnauthorizedException;
+import dev.scx.http.routing.Router;
 
 import java.io.IOException;
 
@@ -44,7 +44,7 @@ public class Test {
         });
 
         router.route().path("/path-params/:id").method(GET).handler(c -> {
-            c.response().send("id : " + c.pathParams().get("id"));
+            c.response().send("id : " + c.pathMatch().get("id"));
         });
 
         router.route().path("/401").method(GET).handler(c -> {

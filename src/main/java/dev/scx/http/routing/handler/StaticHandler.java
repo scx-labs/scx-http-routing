@@ -37,7 +37,7 @@ public class StaticHandler implements Function1Void<RoutingContext, Throwable> {
             return;
         }
 
-        var p = routingContext.pathParams().get("*");
+        var p = routingContext.pathMatch().get("*");
         var filePath = getFilePath(p);
         var notExists = Files.notExists(filePath);
         //文件不存在

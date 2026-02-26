@@ -12,4 +12,13 @@ final class RegexPathMatch implements PathMatch {
         this.namedGroups = namedGroups;
     }
 
+    @Override
+    public String get(String name) {
+        return "";
+    }
+
+    @Override
+    public String get(int index) {
+        return "";
+    }
 }

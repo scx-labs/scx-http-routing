@@ -21,16 +21,12 @@ public class TemplatePathMatcher implements PathMatcher {
     // Pattern for :<token name> in path
     private static final Pattern RE_TOKEN_SEARCH = Pattern.compile(":(" + RE_VAR_NAME + ")");
 
-    // Pattern for (?<token name>) in path
-    private static final Pattern RE_TOKEN_NAME_SEARCH = Pattern.compile("\\(\\?<(" + RE_VAR_NAME + ")>");
-
     // intersection of regex chars and https://tools.ietf.org/html/rfc3986#section-3.3
     private static final Pattern RE_OPERATORS_NO_STAR = Pattern.compile("([()$+.])");
 
     private String path;
     private Pattern pattern;
     private List<String> groups;
-    private Set<String> namedGroupsInRegex;
     private boolean pathEndsWithSlash;
     private boolean exactPath;
 
@@ -38,7 +34,6 @@ public class TemplatePathMatcher implements PathMatcher {
         this.path = null;
         this.pattern = null;
         this.groups = null;
-        this.namedGroupsInRegex = null;
         this.pathEndsWithSlash = false;
         this.exactPath = true;
     }
@@ -140,26 +135,6 @@ public class TemplatePathMatcher implements PathMatcher {
         this.groups = groups;
         this.pattern = Pattern.compile(path);
         return index;
-    }
-
-    void setRegex(String regex) {
-        this.pattern = Pattern.compile(regex);
-        this.exactPath = true;
-        findNamedGroups(this.pattern.pattern());
-    }
-
-    private void findNamedGroups(String path) {
-        Matcher m = RE_TOKEN_NAME_SEARCH.matcher(path);
-        while (m.find()) {
-            this.addNamedGroupInRegex(m.group(1));
-        }
-    }
-
-    private void addNamedGroupInRegex(String namedGroupInRegex) {
-        if (this.namedGroupsInRegex == null) {
-            this.namedGroupsInRegex = new HashSet<>();
-        }
-        this.namedGroupsInRegex.add(namedGroupInRegex);
     }
 
     private boolean pathMatches(String requestPath, ParametersWritable<String, String> pathParams) {
@@ -266,14 +241,6 @@ public class TemplatePathMatcher implements PathMatcher {
                     } else {
                         // Straight regex - un-named params
                         // decode the path as it could contain escaped chars.
-                        if (!isEmpty(namedGroupsInRegex)) {
-                            for (String namedGroup : namedGroupsInRegex) {
-                                String namedGroupValue = m.group(namedGroup);
-                                if (namedGroupValue != null) {
-                                    pathParams.add(namedGroup, namedGroupValue);
-                                }
-                            }
-                        }
                         for (int i = 0; i < m.groupCount(); i = i + 1) {
                             String group = m.group(i + 1);
                             if (group != null) {

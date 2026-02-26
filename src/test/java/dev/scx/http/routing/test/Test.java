@@ -47,7 +47,7 @@ public class Test {
         }));
 
         router.add(route().path("/path-params/:id").method(GET).handler(c -> {
-            c.request().response().send("id : " + c.pathMatch().get("id"));
+            c.request().response().send("id : " + c.pathMatch().capture("id"));
         }));
 
         router.add(route().path("/401").method(GET).handler(c -> {

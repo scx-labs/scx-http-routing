@@ -13,10 +13,7 @@ public interface PathMatcher {
     }
 
     static PathMatcher of(String path) {
-        var pathMatcher = new TemplatePathMatcher();
-        pathMatcher.checkPath(path);
-        pathMatcher.setPath(path);
-        return pathMatcher;
+        return new TemplatePathMatcher(path);
     }
 
     static PathMatcher ofRegex(String regex) {

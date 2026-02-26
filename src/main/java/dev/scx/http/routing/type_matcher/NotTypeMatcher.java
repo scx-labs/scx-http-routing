@@ -11,6 +11,9 @@ final class NotTypeMatcher implements TypeMatcher {
     private final Class<? extends ScxHttpServerRequest> requestType;
 
     public NotTypeMatcher(Class<? extends ScxHttpServerRequest> requestType) {
+        if (requestType == null) {
+            throw new NullPointerException("requestType must not be null");
+        }
         this.requestType = requestType;
     }
 

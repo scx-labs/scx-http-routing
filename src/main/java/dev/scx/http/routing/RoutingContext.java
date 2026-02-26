@@ -1,7 +1,6 @@
 package dev.scx.http.routing;
 
 import dev.scx.http.ScxHttpServerRequest;
-import dev.scx.http.ScxHttpServerResponse;
 import dev.scx.http.routing.path_matcher.PathMatch;
 
 import java.util.Map;
@@ -10,36 +9,18 @@ import java.util.Map;
 ///
 /// @author scx567888
 /// @version 0.0.1
-@SuppressWarnings("unchecked")
 public interface RoutingContext {
 
-    <T extends ScxHttpServerRequest> T request();
-
-    <T extends ScxHttpServerResponse> T response();
-
-    void next() throws Throwable;
+    ScxHttpServerRequest request();
 
     PathMatch pathMatch();
 
-    <T> Map<String, T> data();
+    void next() throws Throwable;
 
-    //************* 以下为 data 辅助方法 *************
+    Map<String, Object> data();
 
-    default RoutingContext put(String key, Object obj) {
-        data().put(key, obj);
-        return this;
-    }
-
-    default <T> T get(String key) {
-        return (T) data().get(key);
-    }
-
-    default <T> T getOrDefault(String key, T defaultValue) {
-        return (T) data().getOrDefault(key, defaultValue);
-    }
-
-    default <T> T remove(String key) {
-        return (T) data().remove(key);
+    default <T extends ScxHttpServerRequest> T request(Class<T> requestType) {
+        return requestType.cast(request());
     }
 
 }

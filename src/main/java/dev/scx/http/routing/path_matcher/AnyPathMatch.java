@@ -1,16 +1,20 @@
 package dev.scx.http.routing.path_matcher;
 
-//todo 待实现
+/// AnyPathMatch
 final class AnyPathMatch implements PathMatch {
 
+    public static final AnyPathMatch ANY_PATH_MATCH = new AnyPathMatch();
+
     @Override
-    public String get(String name) {
-        return "";
+    public String capture(int index) {
+        // 什么都不匹配 返回 null
+        return null;
     }
 
     @Override
-    public String get(int index) {
-        return "";
+    public String capture(String name) {
+        // 什么都不匹配 返回 null
+        return null;
     }
 
 }

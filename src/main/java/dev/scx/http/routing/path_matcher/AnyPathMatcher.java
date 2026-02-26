@@ -1,5 +1,7 @@
 package dev.scx.http.routing.path_matcher;
 
+import static dev.scx.http.routing.path_matcher.AnyPathMatch.ANY_PATH_MATCH;
+
 /// AnyPathMatcher
 ///
 /// @author scx567888
@@ -7,8 +9,6 @@ package dev.scx.http.routing.path_matcher;
 final class AnyPathMatcher implements PathMatcher {
 
     public static final AnyPathMatcher ANY_PATH_MATCHER = new AnyPathMatcher();
-
-    public static final AnyPathMatch ANY_PATH_MATCH = new AnyPathMatch();
 
     @Override
     public PathMatch match(String path) {

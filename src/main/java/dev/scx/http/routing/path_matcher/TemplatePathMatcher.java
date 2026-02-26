@@ -1,4 +1,4 @@
-package dev.scx.http.routing;
+package dev.scx.http.routing.path_matcher;
 
 import dev.scx.http.parameters.Parameters;
 import dev.scx.http.parameters.ParametersWritable;
@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 ///
 /// @author scx567888
 /// @version 0.0.1
-public class PathMatcherImpl implements PathMatcher {
+public class TemplatePathMatcher implements PathMatcher {
 
     // Allow end users to select either the regular valid characters or the extender pattern
     private static final String RE_VAR_NAME = "[A-Za-z0-9_]+";
@@ -32,7 +32,7 @@ public class PathMatcherImpl implements PathMatcher {
     private boolean pathEndsWithSlash;
     private boolean exactPath;
 
-    PathMatcherImpl() {
+    TemplatePathMatcher() {
         this.path = null;
         this.pattern = null;
         this.groups = null;
@@ -290,10 +290,10 @@ public class PathMatcherImpl implements PathMatcher {
     }
 
     @Override
-    public MatchResult matches(String path) {
+    public PathMatch match(String path) {
         ParametersWritable<String, String> pathParams = Parameters.of();
         var accepted = matches(path, pathParams);
-        return new MatchResult(accepted, pathParams);
+        return new PathMatch(accepted, pathParams);
     }
 
     public String path() {

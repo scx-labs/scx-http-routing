@@ -14,12 +14,13 @@ public class TemplatePathMatch implements PathMatch {
     }
 
     @Override
-    public String get(String name) {
-        return pathParams.get(name);
+    public String capture(int index) {
+        return "";
     }
 
     @Override
-    public String get(int index) {
-        return "";
+    public String capture(String name) {
+        return pathParams.get(name);
     }
+
 }

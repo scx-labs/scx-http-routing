@@ -3,6 +3,7 @@ package dev.scx.http.routing.method_matcher;
 import dev.scx.http.method.ScxHttpMethod;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /// MultiMethodMatcher
 ///
@@ -19,6 +20,14 @@ final class MultiMethodMatcher implements MethodMatcher {
     @Override
     public boolean matches(ScxHttpMethod method) {
         return methods.contains(method);
+    }
+
+    @Override
+    public String toString() {
+        return this.methods.stream()
+            .map(ScxHttpMethod::value)
+            .sorted()
+            .collect(Collectors.joining("|"));
     }
 
 }

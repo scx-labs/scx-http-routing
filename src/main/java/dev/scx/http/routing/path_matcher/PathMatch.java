@@ -1,12 +1,17 @@
 package dev.scx.http.routing.path_matcher;
 
-//todo 需要重构
+/// PathMatch
+///
+/// @author scx567888
+/// @version 0.0.1
 public interface PathMatch {
 
-    //todo 重命名?
-    String get(String name);
+    /// 按捕获顺序查询捕获值 (从 0 开始编号).
+    /// 若不存在该索引对应的捕获, 返回 null.
+    String capture(int index);
 
-    // todo 需要重命名?
-    String get(int index);
+    /// 按名称查询命名捕获值。
+    /// 若不存在该名称对应的捕获, 返回 null.
+    String capture(String name);
 
 }

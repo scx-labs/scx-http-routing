@@ -15,4 +15,9 @@ final class AnyMethodMatcher implements MethodMatcher {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "ANY";
+    }
+
 }

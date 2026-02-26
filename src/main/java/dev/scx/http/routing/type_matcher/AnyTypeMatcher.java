@@ -15,4 +15,9 @@ final class AnyTypeMatcher implements TypeMatcher {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "ANY";
+    }
+
 }

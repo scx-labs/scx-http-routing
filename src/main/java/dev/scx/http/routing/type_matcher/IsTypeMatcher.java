@@ -22,4 +22,9 @@ final class IsTypeMatcher implements TypeMatcher {
         return requestType.isInstance(request);
     }
 
+    @Override
+    public String toString() {
+        return "is(" + requestType.getSimpleName() + ")";
+    }
+
 }

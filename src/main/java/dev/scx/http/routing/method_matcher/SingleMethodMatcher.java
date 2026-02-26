@@ -22,4 +22,9 @@ final class SingleMethodMatcher implements MethodMatcher {
         return this.method.equals(method);
     }
 
+    @Override
+    public String toString() {
+        return method.value();
+    }
+
 }

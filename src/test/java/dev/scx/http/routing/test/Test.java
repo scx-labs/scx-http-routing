@@ -1,15 +1,13 @@
 package dev.scx.http.routing.test;
 
-import dev.scx.http.ScxHttpServer;
 import dev.scx.http.exception.UnauthorizedException;
-import dev.scx.http.routing.RouteBuilder;
 import dev.scx.http.routing.Router;
 
 import java.io.IOException;
 
 import static dev.scx.http.method.HttpMethod.GET;
 import static dev.scx.http.method.HttpMethod.POST;
-import static dev.scx.http.routing.RouteBuilder.*;
+import static dev.scx.http.routing.RouteBuilder.route;
 
 // todo 待改造
 public class Test {
@@ -47,7 +45,7 @@ public class Test {
         }));
 
         router.add(route().path("/path-params/:id").method(GET).handler(c -> {
-            c.request().response().send("id : " + c.pathMatch().get("id"));
+            c.request().response().send("id : " + c.pathMatch().capture("id"));
         }));
 
         router.add(route().path("/401").method(GET).handler(c -> {

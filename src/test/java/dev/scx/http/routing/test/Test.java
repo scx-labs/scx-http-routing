@@ -1,15 +1,13 @@
 package dev.scx.http.routing.test;
 
-import dev.scx.http.ScxHttpServer;
 import dev.scx.http.exception.UnauthorizedException;
-import dev.scx.http.routing.RouteBuilder;
 import dev.scx.http.routing.Router;
 
 import java.io.IOException;
 
 import static dev.scx.http.method.HttpMethod.GET;
 import static dev.scx.http.method.HttpMethod.POST;
-import static dev.scx.http.routing.RouteBuilder.*;
+import static dev.scx.http.routing.RouteBuilder.route;
 
 // todo 待改造
 public class Test {

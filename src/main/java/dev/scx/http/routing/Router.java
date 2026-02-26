@@ -28,4 +28,8 @@ public interface Router extends Function1Void<ScxHttpServerRequest, Throwable> {
     /// 只读快照
     List<Route> routes();
 
+    default Router add(RouteBuilder routeBuilder) {
+        return add(routeBuilder.build());
+    }
+
 }

@@ -19,12 +19,16 @@ public final class RouteBuilder {
     private MethodMatcher methodMatcher;
     private Function1Void<RoutingContext, ?> handler;
 
-    public RouteBuilder() {
+    private RouteBuilder() {
         this.order = 0;
         this.typeMatcher = TypeMatcher.any();
         this.pathMatcher = PathMatcher.any();
         this.methodMatcher = MethodMatcher.any();
         this.handler = null;
+    }
+
+    public static RouteBuilder route() {
+        return new RouteBuilder();
     }
 
     // ***************** order 相关 *********************

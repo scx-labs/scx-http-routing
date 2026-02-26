@@ -18,7 +18,8 @@ final class RegexPathMatch implements PathMatch {
 
     @Override
     public String capture(int index) {
-        if (index > groups.length - 1) {
+        // 不再范围内.
+        if (index < 0 || index >= groups.length) {
             return null;
         }
         return groups[index];

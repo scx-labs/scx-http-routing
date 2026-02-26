@@ -34,4 +34,9 @@ final class RegexPathMatcher implements PathMatcher {
         return new RegexPathMatch(groups, namedGroups);
     }
 
+    @Override
+    public String toString() {
+        return "regex(" + pattern.pattern() + ")";
+    }
+
 }

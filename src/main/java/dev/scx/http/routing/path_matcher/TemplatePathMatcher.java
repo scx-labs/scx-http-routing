@@ -279,4 +279,9 @@ public class TemplatePathMatcher implements PathMatcher {
         return exactPath;
     }
 
+    @Override
+    public String toString() {
+        return path;
+    }
+
 }

@@ -23,8 +23,8 @@ public class RoutingContextImpl implements RoutingContext {
     private final Map<String, Object> data;
     private PathMatch nowPathMatch;
 
-    RoutingContextImpl(Iterator<Route> iterator, ScxHttpServerRequest request) {
-        this.iter = iterator;
+    RoutingContextImpl(Iterable<Route> routes, ScxHttpServerRequest request) {
+        this.iter = routes.iterator();
         this.request = request;
         this.data = new HashMap<>();
     }

@@ -3,7 +3,9 @@ package dev.scx.http.routing.path_matcher;
 import dev.scx.http.parameters.Parameters;
 import dev.scx.http.parameters.ParametersWritable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,12 +32,39 @@ public class TemplatePathMatcher implements PathMatcher {
     private boolean pathEndsWithSlash;
     private boolean exactPath;
 
-    TemplatePathMatcher() {
+    TemplatePathMatcher(String path) {
+        if ("".equals(path) || path.charAt(0) != '/') {
+            throw new IllegalArgumentException("Path must start with /");
+        }
         this.path = null;
         this.pattern = null;
         this.groups = null;
         this.pathEndsWithSlash = false;
-        this.exactPath = true;
+        // See if the path is a wildcard "*" is present - If so we need to configure this path to be not exact
+        if (path.charAt(path.length() - 1) != '*') {
+            this.exactPath = true;
+            this.path = path;
+        } else {
+            this.exactPath = false;
+            this.path = path.substring(0, path.length() - 1);
+        }
+
+        this.pathEndsWithSlash = this.path.endsWith("/");
+
+        // See if the path contains ":" - if so then it contains parameter capture groups and we have to generate
+        // a regex for that
+        int params = 0;
+        for (int i = 0; i < path.length(); i = i + 1) {
+            if (path.charAt(i) == ':') {
+                params = params + 1;
+            }
+        }
+        if (params > 0) {
+            int found = createPatternRegex(path);
+            if (params != found) {
+                throw new IllegalArgumentException("path param does not follow the variable naming rules, expected (" + params + ") found (" + found + ")");
+            }
+        }
     }
 
     private static boolean pathMatchesExact(String base, String other, boolean significantSlash) {
@@ -64,40 +93,6 @@ public class TemplatePathMatcher implements PathMatcher {
 
     private static <T> boolean isEmpty(Collection<T> collection) {
         return collection == null || collection.isEmpty();
-    }
-
-    void checkPath(String path) {
-        if ("".equals(path) || path.charAt(0) != '/') {
-            throw new IllegalArgumentException("Path must start with /");
-        }
-    }
-
-    void setPath(String path) {
-        // See if the path is a wildcard "*" is present - If so we need to configure this path to be not exact
-        if (path.charAt(path.length() - 1) != '*') {
-            this.exactPath = true;
-            this.path = path;
-        } else {
-            this.exactPath = false;
-            this.path = path.substring(0, path.length() - 1);
-        }
-
-        this.pathEndsWithSlash = this.path.endsWith("/");
-
-        // See if the path contains ":" - if so then it contains parameter capture groups and we have to generate
-        // a regex for that
-        int params = 0;
-        for (int i = 0; i < path.length(); i = i + 1) {
-            if (path.charAt(i) == ':') {
-                params = params + 1;
-            }
-        }
-        if (params > 0) {
-            int found = createPatternRegex(path);
-            if (params != found) {
-                throw new IllegalArgumentException("path param does not follow the variable naming rules, expected (" + params + ") found (" + found + ")");
-            }
-        }
     }
 
     private int createPatternRegex(String path) {

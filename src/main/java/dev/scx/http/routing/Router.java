@@ -2,34 +2,64 @@ package dev.scx.http.routing;
 
 import dev.scx.function.Function1Void;
 import dev.scx.http.ScxHttpServerRequest;
+import dev.scx.http.routing.method_matcher.MethodMatcher;
+import dev.scx.http.routing.route.Route;
+import dev.scx.http.routing.route_list.OrderedRouteList;
+import dev.scx.http.routing.route_list.RouteList;
+import dev.scx.http.routing.routing_context.RoutingContext;
+import dev.scx.http.routing.routing_input.RoutingInput;
 
-import java.util.List;
+import java.util.HashMap;
+
+import static dev.scx.http.method.HttpMethod.GET;
+import static dev.scx.http.method.HttpMethod.POST;
+
+// todo 还有存在的必要吗?
 
 /// Router
 ///
 /// @author scx567888
 /// @version 0.0.1
-public interface Router extends Function1Void<ScxHttpServerRequest, Throwable> {
+public class Router implements Function1Void<ScxHttpServerRequest, Throwable> {
 
-    static Router of() {
-        return new RouterImpl();
+    private final OrderedRouteList routes = new OrderedRouteList();
+
+    public static Router of() {
+        return new Router();
     }
 
-    /// 添加一个路由
-    /// 路由按 [Route#order()] 从小到大匹配:
-    ///
-    /// - order 越小, 匹配优先级越高.
-    /// - order 相同的路由, 按注册顺序匹配.
-    Router add(Route route);
+    public Router add(RouteBuilder builder) {
+        Route route = builder.build();
+        routes.add(route, builder.order());
+        return this;
+    }
 
-    /// 移除一个路由
-    Router remove(Route route);
+    public Router remove(Route route) {
+        routes.remove(route);
+        return this;
+    }
 
-    /// 只读快照
-    List<Route> routes();
+    public RouteList routeList() {
+        return routes;
+    }
 
-    default Router add(RouteBuilder routeBuilder) {
-        return add(routeBuilder.build());
+    @Override
+    public void apply(ScxHttpServerRequest request) throws Throwable {
+        var input = RoutingInput.of(request);
+        var data = new HashMap<String, Object>();
+        RoutingContext.of(routes, request, input, data).next();
+    }
+
+    public Router get(String path, Function1Void<RoutingContext, ?> handler) {
+       return add(RouteBuilder.route().method(GET).path(path).handler(handler));
+    }
+
+    public Router post(String path, Function1Void<RoutingContext, ?> handler) {
+        return add(RouteBuilder.route().method(POST).path(path).handler(handler));
+    }
+
+    public Router any(String path, Function1Void<RoutingContext, ?> handler) {
+        return add(RouteBuilder.route().path(path).handler(handler));
     }
 
 }

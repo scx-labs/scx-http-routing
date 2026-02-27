@@ -83,6 +83,14 @@
             <scope>test</scope>
         </dependency>
 
+<!-- todo 测试 可能需要移除       -->
+        <dependency>
+            <groupId>dev.scx</groupId>
+            <artifactId>scx-http-x</artifactId>
+            <version>${scx-http-x.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <properties>
@@ -91,6 +99,8 @@
         <scx-http.version>0.4.0</scx-http.version>
         <testng.version>7.11.0</testng.version>
 
+<!-- 测试依赖 可能需要移除 todo       -->
+        <scx-http-x.version>0.3.0</scx-http-x.version>
     </properties>
 
 </project>

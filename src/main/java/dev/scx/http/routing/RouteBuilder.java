@@ -5,8 +5,12 @@ import dev.scx.http.ScxHttpServerRequest;
 import dev.scx.http.method.ScxHttpMethod;
 import dev.scx.http.routing.method_matcher.MethodMatcher;
 import dev.scx.http.routing.path_matcher.PathMatcher;
-import dev.scx.http.routing.type_matcher.TypeMatcher;
+import dev.scx.http.routing.request_matcher.RequestMatcher;
+import dev.scx.http.routing.route.Route;
+import dev.scx.http.routing.route.RouteImpl;
+import dev.scx.http.routing.routing_context.RoutingContext;
 
+// todo 需要重构.
 /// RouteBuilder
 ///
 /// @author scx567888
@@ -14,14 +18,14 @@ import dev.scx.http.routing.type_matcher.TypeMatcher;
 public final class RouteBuilder {
 
     private int order;
-    private TypeMatcher typeMatcher;
+    private RequestMatcher typeMatcher;
     private PathMatcher pathMatcher;
     private MethodMatcher methodMatcher;
     private Function1Void<RoutingContext, ?> handler;
 
     private RouteBuilder() {
         this.order = 0;
-        this.typeMatcher = TypeMatcher.any();
+        this.typeMatcher = RequestMatcher.any();
         this.pathMatcher = PathMatcher.any();
         this.methodMatcher = MethodMatcher.any();
         this.handler = null;
@@ -31,6 +35,10 @@ public final class RouteBuilder {
         return new RouteBuilder();
     }
 
+    int order() {
+        return this.order;
+    }
+
     // ***************** order 相关 *********************
     public RouteBuilder order(int order) {
         this.order = order;
@@ -38,17 +46,17 @@ public final class RouteBuilder {
     }
 
     // ***************** typeMatcher 相关 *********************
-    public RouteBuilder typeMatcher(TypeMatcher typeMatcher) {
+    public RouteBuilder typeMatcher(RequestMatcher typeMatcher) {
         this.typeMatcher = typeMatcher;
         return this;
     }
 
     public RouteBuilder typeIs(Class<? extends ScxHttpServerRequest> requestType) {
-        return typeMatcher(TypeMatcher.is(requestType));
+        return typeMatcher(RequestMatcher.typeIs(requestType));
     }
 
     public RouteBuilder typeNot(Class<? extends ScxHttpServerRequest> requestType) {
-        return typeMatcher(TypeMatcher.not(requestType));
+        return typeMatcher(RequestMatcher.typeNot(requestType));
     }
 
     // ***************** pathMatcher 相关 *********************
@@ -84,7 +92,6 @@ public final class RouteBuilder {
     // ***************** build *********************
     public Route build() {
         return new RouteImpl(
-            order,
             typeMatcher,
             pathMatcher,
             methodMatcher,

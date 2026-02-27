@@ -58,7 +58,7 @@ public final class RouteBuilder {
     }
 
     public RouteBuilder path(String path) {
-        return pathMatcher(PathMatcher.of(path));
+        return pathMatcher(PathMatcher.ofTemplate(path));
     }
 
     public RouteBuilder pathRegex(String regex) {

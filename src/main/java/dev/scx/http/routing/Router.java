@@ -2,7 +2,6 @@ package dev.scx.http.routing;
 
 import dev.scx.function.Function1Void;
 import dev.scx.http.ScxHttpServerRequest;
-import dev.scx.http.routing.method_matcher.MethodMatcher;
 import dev.scx.http.routing.route.Route;
 import dev.scx.http.routing.route_list.OrderedRouteList;
 import dev.scx.http.routing.route_list.RouteList;
@@ -14,7 +13,7 @@ import java.util.HashMap;
 import static dev.scx.http.method.HttpMethod.GET;
 import static dev.scx.http.method.HttpMethod.POST;
 
-// todo 还有存在的必要吗?
+// todo 还有存在的必要吗? 还是留着做一个门面类?
 
 /// Router
 ///
@@ -51,7 +50,7 @@ public class Router implements Function1Void<ScxHttpServerRequest, Throwable> {
     }
 
     public Router get(String path, Function1Void<RoutingContext, ?> handler) {
-       return add(RouteBuilder.route().method(GET).path(path).handler(handler));
+        return add(RouteBuilder.route().method(GET).path(path).handler(handler));
     }
 
     public Router post(String path, Function1Void<RoutingContext, ?> handler) {

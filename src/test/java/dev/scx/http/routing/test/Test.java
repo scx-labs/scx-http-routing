@@ -1,6 +1,5 @@
 package dev.scx.http.routing.test;
 
-import dev.scx.http.ScxHttpServer;
 import dev.scx.http.exception.UnauthorizedException;
 import dev.scx.http.routing.Router;
 import dev.scx.http.x.HttpServer;

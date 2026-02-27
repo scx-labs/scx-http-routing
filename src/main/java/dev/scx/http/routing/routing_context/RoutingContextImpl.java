@@ -1,10 +1,13 @@
-package dev.scx.http.routing;
+package dev.scx.http.routing.routing_context;
 
 import dev.scx.http.ScxHttpServerRequest;
 import dev.scx.http.exception.HttpException;
 import dev.scx.http.exception.MethodNotAllowedException;
 import dev.scx.http.exception.NotFoundException;
 import dev.scx.http.routing.path_matcher.PathMatch;
+import dev.scx.http.routing.route.Route;
+import dev.scx.http.routing.route_list.RouteList;
+import dev.scx.http.routing.routing_input.RoutingInput;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -15,16 +18,16 @@ import java.util.Map;
 /// @version 0.0.1
 public final class RoutingContextImpl implements RoutingContext {
 
-    private final Iterator<Route> iter;
+    private final Iterator<Route> routeIterator;
     private final ScxHttpServerRequest request;
+    private final RoutingInput routingInput;
     private final Map<String, Object> data;
-    private final RoutingRequest routingRequest;
     private PathMatch nowPathMatch;
 
-    RoutingContextImpl(Iterable<Route> routes, ScxHttpServerRequest request, RoutingRequest routingRequest, Map<String, Object> data) {
-        this.iter = routes.iterator();
+    RoutingContextImpl(RouteList routeList, ScxHttpServerRequest request, RoutingInput routingInput, Map<String, Object> data) {
+        this.routeIterator = routeList.iterator();
         this.request = request;
-        this.routingRequest = routingRequest;
+        this.routingInput = routingInput;
         this.data = data;
     }
 
@@ -34,8 +37,8 @@ public final class RoutingContextImpl implements RoutingContext {
     }
 
     @Override
-    public RoutingRequest routingRequest() {
-        return routingRequest;
+    public RoutingInput routingInput() {
+        return routingInput;
     }
 
     @Override
@@ -54,20 +57,20 @@ public final class RoutingContextImpl implements RoutingContext {
     public void next() throws Throwable {
         HttpException e = new NotFoundException();
 
-        while (iter.hasNext()) {
-            var route = iter.next();
+        while (routeIterator.hasNext()) {
+            var route = routeIterator.next();
 
-            // 1, 优先匹配类型
-            var typeMatcherResult = route.typeMatcher().matches(request);
+            // 1, 先处理 通用匹配器
+            var requestMatched = route.requestMatcher().matches(request);
 
-            if (!typeMatcherResult) {
+            if (!requestMatched) {
                 continue;
             }
 
             // 2, 然后匹配路径
-            var pathMatch = route.pathMatcher().match(routingRequest.path());
+            var pathMatch = route.pathMatcher().match(routingInput.path());
 
-            // 匹配不到就下一次
+            // 匹配不到就跳到下一个路由
             if (pathMatch == null) {
                 continue;
             }
@@ -75,11 +78,11 @@ public final class RoutingContextImpl implements RoutingContext {
             this.nowPathMatch = pathMatch;
 
             // 3, 最后匹配方法
-            var methodMatchResult = route.methodMatcher().matches(routingRequest.method());
+            var methodMatched = route.methodMatcher().matches(routingInput.method());
 
             // 匹配方法失败.
-            // 这里不直接抛出异常, 因为后续可能其他路由会匹配成功,
-            if (!methodMatchResult) {
+            // 这里只记录而不直接抛出异常, 因为后续可能其他路由会匹配成功.
+            if (!methodMatched) {
                 e = new MethodNotAllowedException();
                 continue;
             }

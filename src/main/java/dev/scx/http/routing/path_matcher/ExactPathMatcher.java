@@ -2,22 +2,29 @@ package dev.scx.http.routing.path_matcher;
 
 import static dev.scx.http.routing.path_matcher.EmptyPathMatch.EMPTY_PATH_MATCH;
 
-/// AnyPathMatcher
+/// ExactPathMatcher
 ///
 /// @author scx567888
 /// @version 0.0.1
-final class AnyPathMatcher implements PathMatcher {
+final class ExactPathMatcher implements PathMatcher {
 
-    public static final AnyPathMatcher ANY_PATH_MATCHER = new AnyPathMatcher();
+    private final String exactPath;
+
+    public ExactPathMatcher(String exactPath) {
+        this.exactPath = exactPath;
+    }
 
     @Override
     public PathMatch match(String path) {
+        if (!exactPath.equals(path)) {
+            return null;
+        }
         return EMPTY_PATH_MATCH;
     }
 
     @Override
     public String toString() {
-        return "ANY";
+        return "exact(" + exactPath + ")";
     }
 
 }

@@ -13,7 +13,7 @@ public class TemplatePathMatcherTest {
     /// 测试模板
     @Test
     public static void test1() {
-        var matcher = PathMatcher.of("/a/b/:id");
+        var matcher = PathMatcher.ofTemplate("/a/b/:id");
         var result = matcher.match("/a/b/苹果");
         Assert.assertEquals(result.capture("id"), "苹果");
 
@@ -23,7 +23,7 @@ public class TemplatePathMatcherTest {
         var result2 = matcher.match("/a/b/c/ ");
         Assert.assertNull(result2);
 
-        var matcher2 = PathMatcher.of("/a/b/*");
+        var matcher2 = PathMatcher.ofTemplate("/a/b/*");
 
         var result5 = matcher2.match("/a/b/");
         Assert.assertEquals(result5.capture("*"), "");
@@ -31,7 +31,7 @@ public class TemplatePathMatcherTest {
         var result6 = matcher2.match("/a/b/c/d/f/e/f");
         Assert.assertEquals(result6.capture("*"), "c/d/f/e/f");
 
-        var matcher3 = PathMatcher.of("/a/b/:name/*");
+        var matcher3 = PathMatcher.ofTemplate("/a/b/:name/*");
 
         var result7 = matcher3.match("/a/b/小明/");
         Assert.assertEquals(result7.capture("name"), "小明");

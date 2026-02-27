@@ -2,8 +2,10 @@ package dev.scx.http.routing.routing_context;
 
 import dev.scx.http.ScxHttpServerRequest;
 import dev.scx.http.routing.path_matcher.PathMatch;
+import dev.scx.http.routing.route_list.RouteList;
 import dev.scx.http.routing.routing_input.RoutingInput;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /// RoutingContext
@@ -11,6 +13,10 @@ import java.util.Map;
 /// @author scx567888
 /// @version 0.0.1
 public interface RoutingContext {
+
+    static RoutingContext of(RouteList routeList, ScxHttpServerRequest request, RoutingInput routingRequest, HashMap<String, Object> data) {
+        return new RoutingContextImpl(routeList, request, routingRequest, data);
+    }
 
     ScxHttpServerRequest request();
 

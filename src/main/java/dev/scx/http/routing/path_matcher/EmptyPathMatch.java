@@ -1,12 +1,12 @@
 package dev.scx.http.routing.path_matcher;
 
-/// AnyPathMatch
+/// EmptyPathMatch
 ///
 /// @author scx567888
 /// @version 0.0.1
-final class AnyPathMatch implements PathMatch {
+final class EmptyPathMatch implements PathMatch {
 
-    public static final AnyPathMatch ANY_PATH_MATCH = new AnyPathMatch();
+    public static final EmptyPathMatch EMPTY_PATH_MATCH = new EmptyPathMatch();
 
     @Override
     public String capture(int index) {

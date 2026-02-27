@@ -1,6 +1,6 @@
 package dev.scx.http.routing.path_matcher;
 
-import static dev.scx.http.routing.path_matcher.AnyPathMatch.ANY_PATH_MATCH;
+import static dev.scx.http.routing.path_matcher.EmptyPathMatch.EMPTY_PATH_MATCH;
 
 /// AnyPathMatcher
 ///
@@ -12,7 +12,7 @@ final class AnyPathMatcher implements PathMatcher {
 
     @Override
     public PathMatch match(String path) {
-        return ANY_PATH_MATCH;
+        return EMPTY_PATH_MATCH;
     }
 
     @Override

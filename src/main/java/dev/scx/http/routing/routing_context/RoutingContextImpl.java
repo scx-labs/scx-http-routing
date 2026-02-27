@@ -25,7 +25,7 @@ public final class RoutingContextImpl implements RoutingContext {
     private PathMatch nowPathMatch;
 
     RoutingContextImpl(RouteList routeList, ScxHttpServerRequest request, RoutingInput routingInput, Map<String, Object> data) {
-        this.routeIterator = routeList.iterator(routingInput);
+        this.routeIterator = routeList.candidates(routingInput);
         this.request = request;
         this.routingInput = routingInput;
         this.data = data;

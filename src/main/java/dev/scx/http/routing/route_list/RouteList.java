@@ -14,6 +14,6 @@ public interface RouteList {
     ///
     /// 但实现 **不得遗漏** 任何可能匹配成功的路由;
     /// 索引与预筛选只能作为性能优化手段, 而不能影响路由语义的正确性.
-    Iterator<Route> iterator(RoutingInput routingInput);
+    Iterator<Route> candidates(RoutingInput routingInput);
 
 }

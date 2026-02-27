@@ -42,7 +42,7 @@ public final class OrderedRouteList implements RouteList {
     }
 
     @Override
-    public Iterator<Route> iterator(RoutingInput routingInput) {
+    public Iterator<Route> candidates(RoutingInput routingInput) {
         // 这里我们忽略 routingInput, 直接返回全量.
         return new OrderedRouteListIterator(routeEntries.iterator());
     }

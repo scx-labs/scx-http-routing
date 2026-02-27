@@ -6,7 +6,6 @@ import dev.scx.http.exception.MethodNotAllowedException;
 import dev.scx.http.exception.NotFoundException;
 import dev.scx.http.routing.path_matcher.PathMatch;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -19,17 +18,24 @@ public final class RoutingContextImpl implements RoutingContext {
     private final Iterator<Route> iter;
     private final ScxHttpServerRequest request;
     private final Map<String, Object> data;
+    private final RoutingRequest routingRequest;
     private PathMatch nowPathMatch;
 
-    RoutingContextImpl(Iterable<Route> routes, ScxHttpServerRequest request) {
+    RoutingContextImpl(Iterable<Route> routes, ScxHttpServerRequest request, RoutingRequest routingRequest, Map<String, Object> data) {
         this.iter = routes.iterator();
         this.request = request;
-        this.data = new HashMap<>();
+        this.routingRequest = routingRequest;
+        this.data = data;
     }
 
     @Override
     public ScxHttpServerRequest request() {
         return request;
+    }
+
+    @Override
+    public RoutingRequest routingRequest() {
+        return routingRequest;
     }
 
     @Override
@@ -59,7 +65,7 @@ public final class RoutingContextImpl implements RoutingContext {
             }
 
             // 2, 然后匹配路径
-            var pathMatch = route.pathMatcher().match(request.path());
+            var pathMatch = route.pathMatcher().match(routingRequest.path());
 
             // 匹配不到就下一次
             if (pathMatch == null) {
@@ -69,7 +75,7 @@ public final class RoutingContextImpl implements RoutingContext {
             this.nowPathMatch = pathMatch;
 
             // 3, 最后匹配方法
-            var methodMatchResult = route.methodMatcher().matches(request.method());
+            var methodMatchResult = route.methodMatcher().matches(routingRequest.method());
 
             // 匹配方法失败.
             // 这里不直接抛出异常, 因为后续可能其他路由会匹配成功,

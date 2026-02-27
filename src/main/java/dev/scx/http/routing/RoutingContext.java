@@ -13,6 +13,8 @@ public interface RoutingContext {
 
     ScxHttpServerRequest request();
 
+    RoutingRequest routingRequest();
+
     PathMatch pathMatch();
 
     Map<String, Object> data();

@@ -2,12 +2,9 @@ package dev.scx.http.routing.test;
 
 import dev.scx.http.exception.UnauthorizedException;
 import dev.scx.http.routing.Router;
+import dev.scx.http.x.HttpServer;
 
 import java.io.IOException;
-
-import static dev.scx.http.method.HttpMethod.GET;
-import static dev.scx.http.method.HttpMethod.POST;
-import static dev.scx.http.routing.RouteBuilder.route;
 
 // todo 待改造
 public class Test {
@@ -18,13 +15,13 @@ public class Test {
 
     public static void test1() throws IOException {
         var l = System.nanoTime();
-//        var server = new HttpServer();
+        var server = new HttpServer();
 
         var router = Router.of();
 
 //        router.route(-100000).handler(new CorsHandler().addOrigin("http://localhost:18899"));
 
-        router.add(route().path("/abc").handler(c -> {
+        router.any("/abc", c -> {
             var bytes = c.request().asBytes();
             System.out.println(bytes.length);
 //            var bbb=c.request().body().asMultiPart();
@@ -33,36 +30,36 @@ public class Test {
 //            }
             c.request().response().send("12312313");
 //            c.next();
-        }));
+        });
 
-        router.add(route().path("/*").handler(c -> {
+        router.any("/*", c -> {
             System.out.println(c.request().path());
             c.next();
-        }));
+        });
 
-        router.add(route().path("/hello").method(GET).handler(c -> {
+        router.get("/hello", c -> {
             c.request().response().send("hello");
-        }));
+        });
 
-        router.add(route().path("/path-params/:id").method(GET).handler(c -> {
+        router.get("/path-params/:id", c -> {
             c.request().response().send("id : " + c.pathMatch().capture("id"));
-        }));
+        });
 
-        router.add(route().path("/401").method(GET).handler(c -> {
+        router.get("/401", c -> {
             throw new UnauthorizedException();
-        }));
+        });
 
-        router.add(route().path("/405").method(POST).handler(c -> {
+        router.post("/405", c -> {
             System.out.println("405");
-        }));
+        });
 
-        router.add(route().path("/last").method(GET).handler(c -> {
+        router.get("/last", c -> {
             var r = 1 / 0;
-        }));
+        });
 
-//        server.onRequest(router);
+        server.onRequest(router);
 
-//        server.start(8080);
+        server.start(8080);
 
         System.out.println("HttpServer 启动完成 !!! 耗时 : " + (System.nanoTime() - l) / 1000_000);
     }

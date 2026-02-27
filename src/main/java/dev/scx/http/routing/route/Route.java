@@ -1,20 +1,18 @@
-package dev.scx.http.routing;
+package dev.scx.http.routing.route;
 
 import dev.scx.function.Function1Void;
 import dev.scx.http.routing.method_matcher.MethodMatcher;
 import dev.scx.http.routing.path_matcher.PathMatcher;
-import dev.scx.http.routing.type_matcher.TypeMatcher;
+import dev.scx.http.routing.request_matcher.RequestMatcher;
+import dev.scx.http.routing.routing_context.RoutingContext;
 
-/// Route 路由只保存状态不做行为处理
+/// Route
 ///
 /// @author scx567888
 /// @version 0.0.1
 public interface Route {
 
-    /// 路由优先级: 数值越小越先匹配, 相同 order 按注册顺序匹配.
-    int order();
-
-    TypeMatcher typeMatcher();
+    RequestMatcher requestMatcher();
 
     PathMatcher pathMatcher();
 

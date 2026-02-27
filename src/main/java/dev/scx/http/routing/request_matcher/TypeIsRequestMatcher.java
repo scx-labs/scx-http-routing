@@ -1,16 +1,16 @@
-package dev.scx.http.routing.type_matcher;
+package dev.scx.http.routing.request_matcher;
 
 import dev.scx.http.ScxHttpServerRequest;
 
-/// IsTypeMatcher
+/// TypeIsRequestMatcher
 ///
 /// @author scx567888
 /// @version 0.0.1
-final class IsTypeMatcher implements TypeMatcher {
+final class TypeIsRequestMatcher implements RequestMatcher {
 
     private final Class<? extends ScxHttpServerRequest> requestType;
 
-    public IsTypeMatcher(Class<? extends ScxHttpServerRequest> requestType) {
+    public TypeIsRequestMatcher(Class<? extends ScxHttpServerRequest> requestType) {
         if (requestType == null) {
             throw new NullPointerException("requestType must not be null");
         }
@@ -24,7 +24,7 @@ final class IsTypeMatcher implements TypeMatcher {
 
     @Override
     public String toString() {
-        return "is(" + requestType.getSimpleName() + ")";
+        return "typeIs(" + requestType.getSimpleName() + ")";
     }
 
 }

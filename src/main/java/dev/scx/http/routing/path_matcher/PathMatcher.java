@@ -12,6 +12,10 @@ public interface PathMatcher {
         return ANY_PATH_MATCHER;
     }
 
+    static PathMatcher ofExact(String exactPath) {
+        return new ExactPathMatcher(exactPath);
+    }
+
     static PathMatcher of(String path) {
         return new TemplatePathMatcher(path);
     }

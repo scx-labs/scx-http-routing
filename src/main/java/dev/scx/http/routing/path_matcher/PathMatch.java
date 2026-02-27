@@ -6,7 +6,7 @@ package dev.scx.http.routing.path_matcher;
 /// @version 0.0.1
 public interface PathMatch {
 
-    /// 按捕获顺序查询捕获值 (从 0 开始编号).
+    /// 按捕获顺序查询捕获值 (index 从 0 起始).
     /// 若不存在该索引对应的捕获, 返回 null.
     String capture(int index);
 

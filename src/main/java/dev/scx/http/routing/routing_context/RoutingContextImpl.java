@@ -25,7 +25,7 @@ public final class RoutingContextImpl implements RoutingContext {
     private PathMatch nowPathMatch;
 
     RoutingContextImpl(RouteList routeList, ScxHttpServerRequest request, RoutingInput routingInput, Map<String, Object> data) {
-        this.routeIterator = routeList.iterator();
+        this.routeIterator = routeList.iterator(routingInput);
         this.request = request;
         this.routingInput = routingInput;
         this.data = data;
@@ -78,7 +78,7 @@ public final class RoutingContextImpl implements RoutingContext {
             this.nowPathMatch = pathMatch;
 
             // 3, 最后匹配方法
-            var methodMatched = route.methodMatcher().matches(routingInput.method());
+            var methodMatched = route.methodMatcher().matches(request.method());
 
             // 匹配方法失败.
             // 这里只记录而不直接抛出异常, 因为后续可能其他路由会匹配成功.

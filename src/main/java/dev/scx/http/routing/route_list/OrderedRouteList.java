@@ -1,6 +1,7 @@
 package dev.scx.http.routing.route_list;
 
 import dev.scx.http.routing.route.Route;
+import dev.scx.http.routing.routing_input.RoutingInput;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -41,7 +42,8 @@ public final class OrderedRouteList implements RouteList {
     }
 
     @Override
-    public Iterator<Route> iterator() {
+    public Iterator<Route> iterator(RoutingInput routingInput) {
+        // 这里我们忽略 routingInput, 直接返回全量.
         return new OrderedRouteListIterator(routeEntries.iterator());
     }
 

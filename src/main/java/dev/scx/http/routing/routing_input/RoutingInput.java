@@ -9,7 +9,7 @@ import dev.scx.http.uri.ScxURI;
 /// 该抽象刻意只建模 URI (主要是 path), 用于支持路由组合场景,
 /// 例如子路由, 路径前缀处理以及路径重写等.
 ///
-/// 虽然从理论上讲,HTTP headers 和 method 也可以作为路由视图的一部分,
+/// 虽然从理论上讲, HTTP headers 和 method 也可以作为路由视图的一部分,
 /// 但在本设计中被有意识地排除:
 ///
 /// - headers 被视为原始请求 (request) 的事实属性,
@@ -26,6 +26,10 @@ public interface RoutingInput {
 
     static RoutingInput of(ScxHttpServerRequest request) {
         return new RequestRoutingInput(request);
+    }
+
+    static RoutingInput of(ScxURI uri) {
+        return new SimpleRoutingInput(uri);
     }
 
     ScxURI uri();

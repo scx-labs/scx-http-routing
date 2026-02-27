@@ -1,5 +1,7 @@
 package dev.scx.http.routing.path_matcher;
 
+import static dev.scx.http.routing.path_matcher.EmptyPathMatch.EMPTY_PATH_MATCH;
+
 /// ExactPathMatcher
 ///
 /// @author scx567888
@@ -17,7 +19,7 @@ final class ExactPathMatcher implements PathMatcher {
         if (!exactPath.equals(path)) {
             return null;
         }
-        return EmptyPathMatch.EMPTY_PATH_MATCH;
+        return EMPTY_PATH_MATCH;
     }
 
     @Override

@@ -1,14 +1,22 @@
-package dev.scx.http.routing;
+package dev.scx.http.routing.routing_input;
 
+import dev.scx.http.ScxHttpServerRequest;
+import dev.scx.http.headers.ScxHttpHeaders;
 import dev.scx.http.method.ScxHttpMethod;
 import dev.scx.http.parameters.Parameters;
 import dev.scx.http.uri.ScxURI;
 
-public interface RoutingRequest {
+public interface RoutingInput {
+
+    static RoutingInput of(ScxHttpServerRequest request) {
+        return new RequestRoutingInput(request);
+    }
 
     ScxHttpMethod method();
 
     ScxURI uri();
+
+    ScxHttpHeaders headers();
 
     //******************** 简化 URI 操作 *******************
 

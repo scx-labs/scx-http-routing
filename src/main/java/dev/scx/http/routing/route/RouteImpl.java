@@ -1,6 +1,7 @@
-package dev.scx.http.routing;
+package dev.scx.http.routing.route;
 
 import dev.scx.function.Function1Void;
+import dev.scx.http.routing.RoutingContext;
 import dev.scx.http.routing.method_matcher.MethodMatcher;
 import dev.scx.http.routing.path_matcher.PathMatcher;
 import dev.scx.http.routing.request_matcher.RequestMatcher;
@@ -10,7 +11,6 @@ import dev.scx.http.routing.request_matcher.RequestMatcher;
 /// @author scx567888
 /// @version 0.0.1
 public record RouteImpl(
-    int order,
     RequestMatcher requestMatcher,
     PathMatcher pathMatcher,
     MethodMatcher methodMatcher,

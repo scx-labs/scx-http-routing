@@ -1,5 +1,7 @@
 package dev.scx.http.routing.path_matcher;
 
+import java.util.regex.Pattern;
+
 import static dev.scx.http.routing.path_matcher.AnyPathMatcher.ANY_PATH_MATCHER;
 
 /// PathMatcher
@@ -16,12 +18,16 @@ public interface PathMatcher {
         return new ExactPathMatcher(exactPath);
     }
 
-    static PathMatcher of(String path) {
-        return new TemplatePathMatcher(path);
+    static PathMatcher ofTemplate(String template) {
+        return new TemplatePathMatcher(template);
     }
 
     static PathMatcher ofRegex(String regex) {
         return new RegexPathMatcher(regex);
+    }
+
+    static PathMatcher ofRegex(Pattern pattern) {
+        return new RegexPathMatcher(pattern);
     }
 
     /// 匹配失败返回 null

@@ -20,4 +20,9 @@ final class ExactPathMatcher implements PathMatcher {
         return EmptyPathMatch.EMPTY_PATH_MATCH;
     }
 
+    @Override
+    public String toString() {
+        return "exact(" + exactPath + ")";
+    }
+
 }

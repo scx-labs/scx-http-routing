@@ -1,7 +1,8 @@
-package dev.scx.http.routing;
+package dev.scx.http.routing.routing_context;
 
 import dev.scx.http.ScxHttpServerRequest;
 import dev.scx.http.routing.path_matcher.PathMatch;
+import dev.scx.http.routing.routing_input.RoutingInput;
 
 import java.util.Map;
 
@@ -13,7 +14,7 @@ public interface RoutingContext {
 
     ScxHttpServerRequest request();
 
-    RoutingRequest routingRequest();
+    RoutingInput routingInput();
 
     PathMatch pathMatch();
 

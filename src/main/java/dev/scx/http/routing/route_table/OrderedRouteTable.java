@@ -48,7 +48,7 @@ public final class OrderedRouteTable implements RouteTable {
     @Override
     public Iterator<Route> candidates(RoutingInput routingInput) {
         // 这里我们忽略 routingInput, 直接返回全量.
-        return new OrderedRouteIterator(routeEntries.iterator());
+        return new OrderedRouteTableIterator(routeEntries.iterator());
     }
 
     /// 二分法查找, 返回第一个 entry.order() > order 的位置 (upper bound).
@@ -69,7 +69,7 @@ public final class OrderedRouteTable implements RouteTable {
     }
 
     /// 迭代器
-    public record OrderedRouteIterator(Iterator<RouteEntry> iterator) implements Iterator<Route> {
+    private record OrderedRouteTableIterator(Iterator<RouteEntry> iterator) implements Iterator<Route> {
 
         @Override
         public boolean hasNext() {

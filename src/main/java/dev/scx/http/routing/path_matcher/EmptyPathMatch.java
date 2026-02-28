@@ -4,7 +4,7 @@ package dev.scx.http.routing.path_matcher;
 ///
 /// @author scx567888
 /// @version 0.0.1
-final class EmptyPathMatch implements PathMatch {
+public final class EmptyPathMatch implements PathMatch {
 
     public static final EmptyPathMatch EMPTY_PATH_MATCH = new EmptyPathMatch();
 

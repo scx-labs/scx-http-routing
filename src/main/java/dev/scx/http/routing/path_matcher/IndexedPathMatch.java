@@ -6,7 +6,7 @@ import java.util.Map;
 ///
 /// @author scx567888
 /// @version 0.0.1
-final class IndexedPathMatch implements PathMatch {
+public final class IndexedPathMatch implements PathMatch {
 
     private final String[] values;
     private final Map<String, Integer> nameToIndex;

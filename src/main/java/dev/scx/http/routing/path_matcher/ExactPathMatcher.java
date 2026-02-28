@@ -14,7 +14,7 @@ final class ExactPathMatcher implements PathMatcher {
         if (exactPath == null) {
             throw new NullPointerException("exactPath must not be null");
         }
-        if (exactPath.isEmpty() || exactPath.charAt(0) != '/') {
+        if (!exactPath.startsWith("/")) {
             throw new IllegalArgumentException("exactPath must start with /");
         }
         this.exactPath = exactPath;

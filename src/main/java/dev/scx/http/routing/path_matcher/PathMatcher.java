@@ -1,5 +1,7 @@
 package dev.scx.http.routing.path_matcher;
 
+import dev.scx.http.routing.path_matcher.template.TemplatePathMatcher;
+
 import java.util.regex.Pattern;
 
 import static dev.scx.http.routing.path_matcher.AnyPathMatcher.ANY_PATH_MATCHER;

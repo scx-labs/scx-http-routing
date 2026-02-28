@@ -12,11 +12,10 @@ final class RegexPathMatcher implements PathMatcher {
     private final Pattern pattern;
     private final Map<String, Integer> namedGroups;
 
-    public RegexPathMatcher(String regex) {
-        this(Pattern.compile(regex));
-    }
-
     public RegexPathMatcher(Pattern pattern) {
+        if (pattern == null) {
+            throw new NullPointerException("pattern must not be null");
+        }
         this.pattern = pattern;
         this.namedGroups = pattern.namedGroups();
     }

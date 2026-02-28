@@ -23,7 +23,10 @@ public interface PathMatcher {
     }
 
     static PathMatcher ofRegex(String regex) {
-        return new RegexPathMatcher(regex);
+        if (regex == null) {
+            throw new NullPointerException("regex must not be null");
+        }
+        return new RegexPathMatcher(Pattern.compile(regex));
     }
 
     static PathMatcher ofRegex(Pattern pattern) {

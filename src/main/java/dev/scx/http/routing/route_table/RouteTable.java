@@ -1,15 +1,15 @@
-package dev.scx.http.routing.route_list;
+package dev.scx.http.routing.route_table;
 
 import dev.scx.http.routing.Route;
 import dev.scx.http.routing.routing_input.RoutingInput;
 
 import java.util.Iterator;
 
-/// RouteList
+/// RouteTable
 ///
 /// @author scx567888
 /// @version 0.0.1
-public interface RouteList {
+public interface RouteTable {
 
     /// 返回针对给定 [RoutingInput] 的候选路由序列 (按尝试顺序).
     ///

@@ -14,7 +14,7 @@ import java.util.Map;
 /// @version 0.0.1
 public interface RoutingContext {
 
-    static RoutingContext of(RouteList routeList, ScxHttpServerRequest request, RoutingInput routingRequest, HashMap<String, Object> data) {
+    static RoutingContext of(RouteList routeList, ScxHttpServerRequest request, RoutingInput routingRequest, Map<String, Object> data) {
         return new RoutingContextImpl(routeList, request, routingRequest, data);
     }
 

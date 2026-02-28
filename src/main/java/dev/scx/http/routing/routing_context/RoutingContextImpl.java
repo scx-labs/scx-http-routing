@@ -16,7 +16,7 @@ import java.util.Map;
 ///
 /// @author scx567888
 /// @version 0.0.1
-public final class RoutingContextImpl implements RoutingContext {
+final class RoutingContextImpl implements RoutingContext {
 
     private final Iterator<Route> routeIterator;
     private final ScxHttpServerRequest request;
@@ -24,7 +24,7 @@ public final class RoutingContextImpl implements RoutingContext {
     private final Map<String, Object> data;
     private PathMatch nowPathMatch;
 
-    RoutingContextImpl(RouteList routeList, ScxHttpServerRequest request, RoutingInput routingInput, Map<String, Object> data) {
+    public RoutingContextImpl(RouteList routeList, ScxHttpServerRequest request, RoutingInput routingInput, Map<String, Object> data) {
         this.routeIterator = routeList.candidates(routingInput);
         this.request = request;
         this.routingInput = routingInput;

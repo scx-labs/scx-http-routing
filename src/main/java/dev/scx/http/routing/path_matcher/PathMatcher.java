@@ -36,6 +36,7 @@ public interface PathMatcher {
     }
 
     /// 匹配失败返回 null
+    /// 参数永远 是 "/" 起始
     PathMatch match(String path);
 
 }

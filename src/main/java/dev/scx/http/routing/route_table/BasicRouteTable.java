@@ -28,6 +28,7 @@ record BasicRouteTable(Collection<Route> routes) implements RouteTable {
 
     @Override
     public Iterator<Route> candidates(RoutingInput routingInput) {
+        // 返回全量
         return routes.iterator();
     }
 

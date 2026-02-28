@@ -24,6 +24,7 @@ final class MultiMethodMatcher implements MethodMatcher {
 
     @Override
     public String toString() {
+        // 这里排序, 保证每次输出的结果都是一样的.
         return this.methods.stream()
             .map(ScxHttpMethod::value)
             .sorted()

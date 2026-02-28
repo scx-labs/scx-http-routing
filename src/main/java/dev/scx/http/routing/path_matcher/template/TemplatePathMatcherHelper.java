@@ -5,6 +5,10 @@ import java.util.Map;
 
 import static dev.scx.http.routing.path_matcher.template.WildcardToken.WILDCARD_TOKEN;
 
+/// TemplatePathMatcherHelper
+///
+/// @author scx567888
+/// @version 0.0.1
 final class TemplatePathMatcherHelper {
 
     /// 将 tokens 转换成 nameToIndex, 同时进行 ParamToken 的命名冲突校验.

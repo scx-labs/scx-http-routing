@@ -12,17 +12,17 @@ import java.util.Iterator;
 /// @version 0.0.1
 public record SimpleRouteTable(Collection<Route> routes) implements RouteTable {
 
-    public SimpleRouteTable add(Route route){
+    public SimpleRouteTable add(Route route) {
         routes.add(route);
         return this;
     }
 
-    public SimpleRouteTable remove(Route route){
+    public SimpleRouteTable remove(Route route) {
         routes.remove(route);
         return this;
     }
 
-    public int size(){
+    public int size() {
         return routes.size();
     }
 

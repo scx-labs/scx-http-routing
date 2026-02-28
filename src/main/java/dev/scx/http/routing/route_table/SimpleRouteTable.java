@@ -6,18 +6,18 @@ import dev.scx.http.routing.routing_input.RoutingInput;
 import java.util.Collection;
 import java.util.Iterator;
 
-/// BasicRouteTable
+/// SimpleRouteTable
 ///
 /// @author scx567888
 /// @version 0.0.1
-record BasicRouteTable(Collection<Route> routes) implements RouteTable {
+record SimpleRouteTable(Collection<Route> routes) implements RouteTable {
 
-    public BasicRouteTable add(Route route){
+    public SimpleRouteTable add(Route route){
         routes.add(route);
         return this;
     }
 
-    public BasicRouteTable remove(Route route){
+    public SimpleRouteTable remove(Route route){
         routes.remove(route);
         return this;
     }

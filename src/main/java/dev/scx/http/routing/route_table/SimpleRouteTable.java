@@ -10,7 +10,7 @@ import java.util.Iterator;
 ///
 /// @author scx567888
 /// @version 0.0.1
-record SimpleRouteTable(Collection<Route> routes) implements RouteTable {
+public record SimpleRouteTable(Collection<Route> routes) implements RouteTable {
 
     public SimpleRouteTable add(Route route){
         routes.add(route);

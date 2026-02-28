@@ -33,7 +33,7 @@ public class Test {
         });
 
         router.any("/*", c -> {
-            System.out.println(c.request().path());
+            System.out.println(c.pathMatch().capture("*"));
             c.next();
         });
 

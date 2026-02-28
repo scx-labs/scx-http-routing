@@ -1,5 +1,7 @@
 package dev.scx.http.routing.path_matcher;
 
+import dev.scx.http.routing.path_matcher.template.TemplatePathMatcher;
+
 import java.util.regex.Pattern;
 
 import static dev.scx.http.routing.path_matcher.AnyPathMatcher.ANY_PATH_MATCHER;
@@ -23,7 +25,10 @@ public interface PathMatcher {
     }
 
     static PathMatcher ofRegex(String regex) {
-        return new RegexPathMatcher(regex);
+        if (regex == null) {
+            throw new NullPointerException("regex must not be null");
+        }
+        return new RegexPathMatcher(Pattern.compile(regex));
     }
 
     static PathMatcher ofRegex(Pattern pattern) {
@@ -31,6 +36,7 @@ public interface PathMatcher {
     }
 
     /// 匹配失败返回 null
+    /// 参数永远 是 "/" 起始
     PathMatch match(String path);
 
 }

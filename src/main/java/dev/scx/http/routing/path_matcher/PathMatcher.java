@@ -19,7 +19,7 @@ public interface PathMatcher {
     }
 
     static PathMatcher ofTemplate(String template) {
-        return new TemplatePathMatcher1(template);
+        return new TemplatePathMatcher(template);
     }
 
     static PathMatcher ofRegex(String regex) {

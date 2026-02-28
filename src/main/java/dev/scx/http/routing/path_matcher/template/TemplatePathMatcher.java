@@ -47,10 +47,15 @@ public final class TemplatePathMatcher implements PathMatcher {
         // 1, 长度校验. 如果包含尾部通配符. 长度必须大于等于 token 长度.
         int tokensCount = tokens.length;
         int segmentsCount = segments.length - 1;
-        int fixedLen = hasWildcard() ? tokensCount - 1 : tokensCount;
 
-        if (segmentsCount < fixedLen) {
-            return null;
+        if (hasWildcard()) {
+            if (segmentsCount < tokensCount - 1) {
+                return null;
+            }
+        } else { // 没有通配符 必须相等
+            if (segmentsCount != tokensCount) {
+                return null;
+            }
         }
 
         // 2, 逐段匹配.
@@ -72,7 +77,7 @@ public final class TemplatePathMatcher implements PathMatcher {
                 case ParamToken p -> {
                     values.add(segment);
                 }
-                case WildcardToken w ->{
+                case WildcardToken w -> {
                     // 这里需要返回所有后续 url.
                     // todo 这里怎么写? 记录 索引 然后 subString 还是 拼接剩余的? 要不要起始带 / ?
                 }

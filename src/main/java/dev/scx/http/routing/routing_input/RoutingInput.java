@@ -22,6 +22,9 @@ import dev.scx.http.uri.ScxURI;
 /// 该取舍旨在保持 `RoutingInput` 的职责单一和语义清晰,
 /// 避免其演化为另一个 request 抽象,
 /// 同时仍然覆盖路由系统中唯一具有普遍实际价值的视图变换能力: 路径(URI)重写.
+///
+/// @author scx567888
+/// @version 0.0.1
 public interface RoutingInput {
 
     static RoutingInput of(ScxHttpServerRequest request) {

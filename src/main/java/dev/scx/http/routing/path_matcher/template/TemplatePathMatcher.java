@@ -31,10 +31,6 @@ public final class TemplatePathMatcher implements PathMatcher {
         this.hasWildcard = tokens[tokens.length - 1] == WILDCARD_TOKEN;
     }
 
-    static void main() {
-        var s = PathMatcher.ofTemplate("/");
-    }
-
     @Override
     public PathMatch match(String path) {
         // 0, 切分 path

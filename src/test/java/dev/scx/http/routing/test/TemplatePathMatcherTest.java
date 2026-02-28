@@ -25,21 +25,24 @@ public class TemplatePathMatcherTest {
 
         var matcher2 = PathMatcher.ofTemplate("/a/b/*");
 
+        var result4 = matcher2.match("/a/b");
+        Assert.assertEquals(result4.capture("*"), "");
+
         var result5 = matcher2.match("/a/b/");
-        Assert.assertEquals(result5.capture("*"), "");
+        Assert.assertEquals(result5.capture("*"), "/");
 
         var result6 = matcher2.match("/a/b/c/d/f/e/f");
-        Assert.assertEquals(result6.capture("*"), "c/d/f/e/f");
+        Assert.assertEquals(result6.capture("*"), "/c/d/f/e/f");
 
         var matcher3 = PathMatcher.ofTemplate("/a/b/:name/*");
 
         var result7 = matcher3.match("/a/b/小明/");
         Assert.assertEquals(result7.capture("name"), "小明");
-        Assert.assertEquals(result7.capture("*"), "");
+        Assert.assertEquals(result7.capture("*"), "/");
 
         var result8 = matcher3.match("/a/b/小明/9");
         Assert.assertEquals(result8.capture("name"), "小明");
-        Assert.assertEquals(result8.capture("*"), "9");
+        Assert.assertEquals(result8.capture("*"), "/9");
     }
 
 }

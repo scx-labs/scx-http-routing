@@ -2,8 +2,8 @@ package dev.scx.http.routing;
 
 import dev.scx.function.Function1Void;
 import dev.scx.http.ScxHttpServerRequest;
-import dev.scx.http.routing.route_list.OrderedRouteList;
-import dev.scx.http.routing.route_list.RouteList;
+import dev.scx.http.routing.route_table.OrderedRouteTable;
+import dev.scx.http.routing.route_table.RouteTable;
 import dev.scx.http.routing.routing_input.RoutingInput;
 
 import java.util.HashMap;
@@ -19,7 +19,7 @@ import static dev.scx.http.method.HttpMethod.POST;
 /// @version 0.0.1
 public class Router implements Function1Void<ScxHttpServerRequest, Throwable> {
 
-    private final OrderedRouteList routes = new OrderedRouteList();
+    private final OrderedRouteTable routes = new OrderedRouteTable();
 
     public static Router of() {
         return new Router();
@@ -27,7 +27,7 @@ public class Router implements Function1Void<ScxHttpServerRequest, Throwable> {
 
     public Router add(RouteBuilder builder) {
         Route route = builder.build();
-        routes.add(route, builder.order());
+        routes.add(builder.order(), route);
         return this;
     }
 
@@ -36,7 +36,7 @@ public class Router implements Function1Void<ScxHttpServerRequest, Throwable> {
         return this;
     }
 
-    public RouteList routeList() {
+    public RouteTable routeList() {
         return routes;
     }
 

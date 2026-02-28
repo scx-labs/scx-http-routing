@@ -5,7 +5,7 @@ import dev.scx.http.exception.HttpException;
 import dev.scx.http.exception.MethodNotAllowedException;
 import dev.scx.http.exception.NotFoundException;
 import dev.scx.http.routing.path_matcher.PathMatch;
-import dev.scx.http.routing.route_list.RouteList;
+import dev.scx.http.routing.route_table.RouteTable;
 import dev.scx.http.routing.routing_input.RoutingInput;
 
 import java.util.Iterator;
@@ -23,8 +23,8 @@ final class RoutingContextImpl implements RoutingContext {
     private final Map<String, Object> data;
     private PathMatch nowPathMatch;
 
-    public RoutingContextImpl(RouteList routeList, ScxHttpServerRequest request, RoutingInput routingInput, Map<String, Object> data) {
-        this.routeIterator = routeList.candidates(routingInput);
+    public RoutingContextImpl(RouteTable routeTable, ScxHttpServerRequest request, RoutingInput routingInput, Map<String, Object> data) {
+        this.routeIterator = routeTable.candidates(routingInput);
         this.request = request;
         this.routingInput = routingInput;
         this.data = data;

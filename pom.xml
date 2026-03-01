@@ -100,7 +100,7 @@
         <testng.version>7.11.0</testng.version>
 
         <!-- 测试依赖 可能需要移除 todo       -->
-        <scx-http-x.version>0.3.0</scx-http-x.version>
+        <scx-http-x.version>0.3.1</scx-http-x.version>
     </properties>
 
 </project>
